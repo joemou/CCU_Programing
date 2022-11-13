@@ -103,7 +103,7 @@ void English_alphabets_count(char ar[], int x){
     }
 
     //總和
-    for (j = 0; j < 25;j++){
+    for (j = 0; j <=25;j++){
         sum += count_num[j];
     }
     
