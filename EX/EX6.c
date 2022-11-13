@@ -91,8 +91,8 @@ void Lines_count(char ar[], int x){
 //算字母和比例
 void English_alphabets_count(char ar[], int x){
     int alphabet = 0, count_num[26] = {0},sum=0,i=0,k=0,j=0;
- 
-    
+    float freq = 0;
+
     //次數
     for (i = 0; i <= x;i++){
 
@@ -108,7 +108,15 @@ void English_alphabets_count(char ar[], int x){
     }
     
     //輸出
+    freq = (float)count_num[k] / sum;
+    
     for (k = 0; k <= 25; k++){
-        printf("%c/%c: %d, %.3f\n", k + 'A', k + 'a', count_num[k],(float)count_num[k] / sum);
+        freq = (float)count_num[k] / sum;
+
+        if(sum==0){
+        freq=0;
+        }
+
+        printf("%c/%c: %d, %.3f\n", k + 'A', k + 'a', count_num[k],freq);
     }
 }
