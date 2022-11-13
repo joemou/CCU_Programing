@@ -40,7 +40,7 @@ void byte_counts(int x){
 void Lowercase_Count(char ar[],int x){
     int Lowercase_Count=0;
     for (int i = 0; i <= x;i++){
-        if(toupper(ar[i])!=ar[i])
+        if('a'<=ar[i]&&ar[i]<='z')
             Lowercase_Count ++;
     }
     printf("Lowercase Count: %d\n", Lowercase_Count);
