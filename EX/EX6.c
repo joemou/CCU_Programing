@@ -15,20 +15,18 @@ void English_alphabets_count(char ar[], int x);
 
 int main(){
 
+    char input[100000] = {0};
+    int i = 0;
 
-char input[100000]={0};
-int i=0;
+    for (i = 0; (input[i] = getchar()) != EOF; i++);
 
-for (i = 0; (input[i]=getchar ()) != EOF;i++);
-
-
-byte_counts(i);
-Lowercase_Count(input,i);
-Uppercase_Count(input,i);
-Digit_Count(input,i);
-Whitespace_count(input, i);
-Lines_count(input, i);
-English_alphabets_count(input, i);
+    byte_counts(i);
+    Lowercase_Count(input, i);
+    Uppercase_Count(input, i);
+    Digit_Count(input, i);
+    Whitespace_count(input, i);
+    Lines_count(input, i);
+    English_alphabets_count(input, i);
 
 }
 
@@ -85,14 +83,15 @@ void Lines_count(char ar[], int x){
 
     for (int i = 0; i <= x; i++)
     {
-        if(ar[i]=='\n'&&ar[i]!=EOF)
+       
+        if(ar[i]=='\n'&&ar[i]!=EOF){
             Line_Count ++;
+        }
         
     }
-    if(Line_Count==0){
-        if(ar[0]!=EOF){
-            Line_Count = 1;
-        }
+    //因若最後一行結尾為EOF偵測不到且會影響值(放中間不會),所以偵測EOF前一個字元是否為換行,不是則+1
+    if(ar[x-1]!='\n'){
+         Line_Count ++;
     }
     printf("Line Count: %d\n", Line_Count);
 }
