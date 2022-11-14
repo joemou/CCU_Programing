@@ -80,10 +80,17 @@ void Whitespace_count(char ar[], int x){
 
 //算行
 void Lines_count(char ar[], int x){
-    int Line_Count=0;
-     for (int i = 0; i <= x;i++){
-        if(ar[i]=='\n')
+    int Line_Count=0,eof_count=0;
+    
+    for (int i = 0; i <= x; i++)
+    {
+        if(ar[i]=='\n'&&ar[i]!=EOF)
             Line_Count ++;
+        if(ar[i]==EOF)
+            eof_count++;
+    }
+    if(eof_count>=1){
+        Line_Count = Line_Count + eof_count;
     }
     printf("Line Count: %d\n", Line_Count);
 }
