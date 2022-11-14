@@ -3,7 +3,12 @@
 
 int main(void)
 {
- int c;
-    while ((c = getchar()) != EOF)
-       putchar(c);
+ char input[100000]={0};
+ int i=0;
+
+for (i = 0; (input[i]=getchar ()) != EOF;i++);
+
+for (int k = 0; k <= i;k++){
+   printf("%c", input[k]);
+}
 }
