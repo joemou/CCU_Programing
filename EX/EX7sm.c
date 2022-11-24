@@ -134,9 +134,6 @@ while(0<=area&&area<=3){
                     printf("  [3] Improve your hotdog flavor\n");
                     printf("Enter the number(s): ");
                     scanf("%d", &activity[i]);
-                    if((activity[i]>3)||(activity[i]<1)){
-                    printf("Invalid input!!!!\n");
-                    }
                     }
                     
                     
