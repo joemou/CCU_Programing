@@ -124,16 +124,10 @@ while(0<=area&&area<=3){
       for (int i = 0; i < 4; i++){//0:area1....
                     scanf("%d", &activity[i]);
                 }
-      for (int i = 0; i < 4; i++){//0:area1....
-                    
-                    if(activity[i]<1||activity[i]>3){
-                        printf("Invalid input!!!!\n");
-                        break;
-                    }
-                }
+      
       for (int i = 0; i < 4; i++){
                     while ((activity[i]>3)||(activity[i]<1)){
-                    
+                    printf("Invalid input!!!!\n");
                     printf("Actions you can take at Area %d:\n",i+1 );
                     printf("  [1] Sell the hotdogs\n");
                     printf("  [2] Improve your cooking speed\n");
