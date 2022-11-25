@@ -45,8 +45,22 @@ int inserction(){
 
     int position;
     int num;
+    
     printf("position to insert:");
     scanf("%d", &position);
+    
+    if(position<0||position>9){
+        printf("INVALID POSITION");
+        return 0;
+    }
+
     printf("enter the value to insert:");
     scanf("%d", &num);
+
+    for (int i=position; i<10;i++){
+        return arr[i+1]=arr[i];
+    }
+
+        return arr[position] = num;
+    
 }
