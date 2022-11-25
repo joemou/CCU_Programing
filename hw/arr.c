@@ -4,7 +4,7 @@ int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
 int inserction();
 int updation();
-void traversing();
+int traversing();
 int deletion();
 
 int main(){
@@ -29,7 +29,7 @@ int main(){
 
         }
         else if(action[i]=='s'){
-            void traversing();
+            int traversing();
             
         }
         else if(action[i]=='t'){
@@ -68,6 +68,7 @@ int inserction(){
     }
 
     printf("\n");
+    return 0;
 }
 
 int updation(){
@@ -94,15 +95,17 @@ int updation(){
     }
     
     printf("\n");
+    return 0;
 }
 
-void traversing(){
+int traversing(){
 
     for (int i = 0; i < 10;i++){
         printf("%d ", arr[i]);
     }
     
     printf("\n");
+    return 0;
 }
 
 int deletion(){
@@ -125,4 +128,6 @@ int deletion(){
     }
     
     printf("\n");
+
+    return 0;
 }
