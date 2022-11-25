@@ -8,15 +8,17 @@ int traversing();
 int deletion();
 
 int main(){
-    int action_num = 0;
-    char action[] = {};
+    int action_num = 1;
+    char action[] = {0};
 
     printf("num of actions:");
-    scanf("%d", &action_num);
+    
+
     for (int i = 0; i < action_num;i++){
-        action[i]=getchar();
-        printf("%d", action[i]);
+        scanf("%c",action[i]);
     }
+
+
     for (int i = 0; i < action_num;i++){
         if(action[i]=='i'){
             int inserction();
