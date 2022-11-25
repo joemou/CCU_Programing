@@ -1,8 +1,11 @@
 #include <stdio.h>
 
-
-int long long num = 01234;
-
 int main(){
-  printf("%d" ,num / 2);
+    int action_num = 0;
+    char action[] = {0};
+
+    printf("num of actions:");
+
+    scanf("%c", &action[0]);
+    printf("%c", action[0]);
 }
