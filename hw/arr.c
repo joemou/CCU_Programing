@@ -33,7 +33,7 @@ int main(){
             
         }
         else if(action[i]=='t'){
-            void deletion();
+            int deletion();
             
         }
         else{
@@ -108,7 +108,7 @@ void traversing(){
 int deletion(){
 
     int position;
-    int num;
+
     
     printf("position to delete:");
     scanf("%d", &position);
