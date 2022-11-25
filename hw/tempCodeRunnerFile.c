@@ -1,2 +1,2 @@
-int action_num = 0;
-    char action[] = {0};
+
+    printf("num of actions:");

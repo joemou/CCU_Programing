@@ -1,4 +1,6 @@
+
 #include <stdio.h>
+#include <string.h>
 int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
 
@@ -9,17 +11,17 @@ int deletion();
 
 int main(){
     int action_num = 0;
-    char action[100000];
+    char action[10000];
+    
 
     printf("num of actions:");
     scanf("%d", &action_num);
 
-    
-
-     for (int i = 0; i < action_num; ++i){
-        scanf("%s", &action[i]);  
+    for (int i = 0; i < action_num; i++)
+    {
+        scanf("%c", &action[i]);
+        printf("%c\n" ,action[i]);
     }
-
 
     for (int i = 0; i < action_num;i++){
         if(action[i]=='i'){
@@ -30,11 +32,11 @@ int main(){
             updation();
 
         }
-        else if(action[i]=='s'){
+        else if(action[i]=='t'){
             traversing();
             
         }
-        else if(action[i]=='t'){
+        else if(action[i]=='d'){
             deletion();
             
         }

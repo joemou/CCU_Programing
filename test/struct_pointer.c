@@ -1,20 +1,20 @@
 #include <stdio.h>
+int main()
+{
+    int action_num = 0;
+    char action[10000];
+    char ch;
 
-int main(){
+    printf("num of actions:");
+    scanf("%d", &action_num);
 
-    int marks[10], n;
-    printf("Enter number of elements: ");
-    scanf("%d", &n);
-
-    for (int i = 0; i < n; ++i)
+    for (int i = 0; i < action_num; i++)
     {
-        printf("Enter number%d: ", i + 1);
-        scanf("%d", &marks[i]);     
-  }
+        scanf("%s", &action[i]);
 
-  for(int i=0; i < n; ++i) {
-      printf("%d", marks[i]);
- }
+        
+        
+    }
 
-
+    printf("%c", action[1]);
 }
