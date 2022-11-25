@@ -4,7 +4,7 @@ int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
 int inserction();
 int updation();
-int traversing();
+void traversing();
 int deletion();
 
 int main(){
@@ -29,11 +29,11 @@ int main(){
 
         }
         else if(action[i]=='s'){
-            int traversing();
+            void traversing();
             
         }
         else if(action[i]=='t'){
-            int deletion();
+            void deletion();
             
         }
         else{
@@ -50,7 +50,7 @@ int inserction(){
     scanf("%d", &position);
     
     if(position<0||position>9){
-        printf("INVALID POSITION");
+        printf("INVALID POSITION\n");
         return 0;
     }
 
@@ -58,9 +58,71 @@ int inserction(){
     scanf("%d", &num);
 
     for (int i=position; i<10;i++){
-        return arr[i+1]=arr[i];
+        arr[i+1]=arr[i];
     }
 
-        return arr[position] = num;
+    arr[position] = num;
+
+    for (int i = 0; i < 10;i++){
+        printf("%d ", arr[i]);
+    }
+
+    printf("\n");
+}
+
+int updation(){
+
+    int position;
+    int num;
     
+    printf("position to update:");
+    scanf("%d", &position);
+    
+    if(position<0||position>9){
+        printf("INVALID POSITION\n");
+        return 0;
+    }
+
+    printf("enter the value to update:");
+    scanf("%d", &num);
+
+
+    arr[position] = num;
+    
+    for (int i = 0; i < 10;i++){
+        printf("%d ", arr[i]);
+    }
+    
+    printf("\n");
+}
+
+void traversing(){
+
+    for (int i = 0; i < 10;i++){
+        printf("%d ", arr[i]);
+    }
+    
+    printf("\n");
+}
+
+int deletion(){
+
+    int position;
+    int num;
+    
+    printf("position to delete:");
+    scanf("%d", &position);
+    
+    if(position<0||position>9){
+        printf("INVALID POSITION\n");
+        return 0;
+    }
+
+    arr[position] = 0;
+    
+    for (int i = 0; i < 10;i++){
+        printf("%d ", arr[i]);
+    }
+    
+    printf("\n");
 }
