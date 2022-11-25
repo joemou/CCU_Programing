@@ -1,4 +1,4 @@
-#include<stdio.h>
+#include <stdio.h>
 int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
 
@@ -9,31 +9,33 @@ int deletion();
 
 int main(){
     int action_num = 0;
-    char action[] = {0};
+    char action[100000];
 
     printf("num of actions:");
     scanf("%d", &action_num);
 
-    for (int i = 0; i < action_num;i++){
-        scanf("%c",action[i]);
+    
+
+     for (int i = 0; i < action_num; ++i){
+        scanf("%s", &action[i]);  
     }
 
 
     for (int i = 0; i < action_num;i++){
         if(action[i]=='i'){
-            int inserction();
+            inserction();
 
         }
         else if(action[i]=='u'){
-            int updation();
+            updation();
 
         }
         else if(action[i]=='s'){
-            int traversing();
+            traversing();
             
         }
         else if(action[i]=='t'){
-            int deletion();
+            deletion();
             
         }
         else{
@@ -57,7 +59,7 @@ int inserction(){
     printf("enter the value to insert:");
     scanf("%d", &num);
 
-    for (int i=position; i<10;i++){
+    for (int i=9; i>=position;i--){
         arr[i+1]=arr[i];
     }
 
