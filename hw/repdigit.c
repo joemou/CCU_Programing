@@ -9,8 +9,8 @@ int main(){
     scanf("%lld", &number);
     
     while(number){
-        num[number % 10]++;
-        number /= 10;
+        num[number % 10]++;//取個位數>>繼續取個位數
+        number /= 10;//除10>>繼續除10
         
     }
 
@@ -21,7 +21,8 @@ int main(){
 
     printf("\n");
 
-    for (int i = 0; i < 10;i++){
+    for (int i = 0; i < 10;i++)
+    {
         printf("%d ",num[i]);
     }
 }
