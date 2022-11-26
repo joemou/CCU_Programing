@@ -14,7 +14,7 @@ int main(){
     char action[10000];
     char input;
 
-    printf("num of actions:");
+    printf("num of actions:\n");
     scanf("%d", &action_num);
 
     while(strlen(action)!=action_num){
@@ -54,7 +54,7 @@ int inserction(){
     int position;
     int num;
     
-    printf("position to insert:");
+    printf("position to insert:\n");
     scanf("%d", &position);
     
     if(position<0||position>9){
@@ -62,7 +62,7 @@ int inserction(){
         return 0;
     }
 
-    printf("enter the value to insert:");
+    printf("enter the value to insert:\n");
     scanf("%d", &num);
 
     for (int i=9; i>=position;i--){
@@ -84,7 +84,7 @@ int updation(){
     int position;
     int num;
     
-    printf("position to update:");
+    printf("position to update:\n");
     scanf("%d", &position);
     
     if(position<0||position>9){
@@ -92,7 +92,7 @@ int updation(){
         return 0;
     }
 
-    printf("enter the value to update:");
+    printf("enter the value to update:\n");
     scanf("%d", &num);
 
 
@@ -121,7 +121,7 @@ int deletion(){
     int position;
 
     
-    printf("position to delete:");
+    printf("position to delete:\n");
     scanf("%d", &position);
     
     if(position<0||position>9){
