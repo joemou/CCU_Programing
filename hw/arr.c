@@ -10,17 +10,21 @@ int traversing();
 int deletion();
 
 int main(){
-    int action_num = 0;
+    int action_num = 0,i=0;
     char action[10000];
-    
+    char input;
 
     printf("num of actions:");
     scanf("%d", &action_num);
 
-    for (int i = 0; i < action_num; i++)
-    {
-        scanf("%c", &action[i]);
-        printf("%c\n" ,action[i]);
+    while(strlen(action)!=action_num){
+
+        while ((input = getchar()) != '\n')
+     {
+        
+        action[i] = input;
+        i++;
+    }
     }
 
     for (int i = 0; i < action_num;i++){
