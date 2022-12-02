@@ -1,2 +1,2 @@
 
-    printf("num of actions:");
+         }
