@@ -7,6 +7,8 @@ int main(){
     
     while(N!=0){
         scanf("%d", &N);
+        if(N==0)
+            break;
         for(int i=1;i<N;i++){
 
          for(int j=i+1;j<=N;j++){
