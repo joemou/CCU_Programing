@@ -2,11 +2,11 @@
 
 int main(){
 
-    int time=0,i=0;
-    int f[30] = {0, 1};
+    long long int time=0,i=0;
+    long long int f[50] = {0, 1};
     
 
-    for(i = 2; i < 30; i++){
+    for(i = 2; i < 50; i++){
         f[i] = f[i - 1] + f[i - 2];
     }
 
@@ -20,7 +20,7 @@ int main(){
         scanf("%d", &num);
         printf("%d = ", num);
 
-        for(i = 29; i >= 2; i--){
+        for(i = 49; i >= 2; i--){
             if(num >= f[i]){
                 num -= f[i];
                 on_off = 1;
