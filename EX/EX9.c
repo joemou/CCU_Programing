@@ -67,13 +67,7 @@ int fibonacci(int a){
 
 int binomial_coefficient(int a, int b){
 
-    if(a-1==1){
-        return 1;
-    }
-    if(a>1){
-        return 
-    }
-
+    return factorial(a) / (factorial(b) *factorial(a -b));
 }
 int power(int a,int b,int c){
 
