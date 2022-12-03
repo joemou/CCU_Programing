@@ -1,12 +1,12 @@
 #include <stdio.h>
-int factorial(int a);
+int factorial(long long int a);
 int fibonacci(int a);
-int binomial_coefficient(int a,int b);
-int power(long long int a,long long int b);
+int binomial_coefficient(long long int a,long long int b);
+int power_module(long long int a,long long int b,long long int c);
 
 int main(){
 
-    int times=0, query=0,power_ans=0;
+    int times=0, query=0;
     int a=0, b=0, c=0;
     
     printf("How many queries do you want: ");
@@ -36,14 +36,7 @@ int main(){
             case 4:
                 printf("Please enter x, y and m: ");
                 scanf("%d %d %d",& a,&b,&c);
-                power_ans=power(a, b);
-                for (int k = 1; k <= (power_ans >= c ? power_ans : c);k++){
-                 
-                    if(power_ans<c*k){
-                        printf("%d\n", power_ans-c*(k-1));
-                        break;
-                    }
-                }
+                printf("%d\n", power_module(a, b, c));
 
                 break;    
         }
@@ -51,7 +44,7 @@ int main(){
 }
 
 
-int factorial(int a){
+int factorial(long long int a){
 
     if(a==1){
         return 1;
@@ -77,20 +70,26 @@ int fibonacci(int a){
     return 0;
 }
 
-int binomial_coefficient(int a, int b){
-
-    return factorial(a) / (factorial(b) *factorial(a -b));
+int binomial_coefficient(long long int a,long long int b){
+    if(a==b||b==0){
+        return 1;
+    }
+    if(a>b){
+        return binomial_coefficient(a - 1, b) + binomial_coefficient(a - 1, b - 1);
+    }
+    return 0;
 }
-int power(long long int a,long long int b){
+
+int power_module(long long int a,long long int b,long long int c){
     if(b==1){
-        return a;
+        return a%c;
     }
     if(b%2==1){
 
-        return a * power(a, (b - 1));
+        return (a * power_module(a, (b - 1),c))%c;
     }
     if(b%2==0){
-        return power(a, 2 / b) * power(a, 2 / b);
+        return (power_module(a, b/2,c) * power_module(a, b/2,c))%c;
     }
 
     return 0;
