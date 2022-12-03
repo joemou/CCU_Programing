@@ -1,8 +1,8 @@
 #include <stdio.h>
-int factorial(long long int a);
-int fibonacci(int a);
-int binomial_coefficient(long long int a,long long int b);
-int power_module(long long int a,long long int b,long long int c);
+long long int factorial(long long int a);
+long long int fibonacci(int a);
+long long int binomial_coefficient(long long int a,long long int b);
+long long int power_module(long long int a,long long int b,long long int c);
 
 int main(){
 
@@ -44,7 +44,7 @@ int main(){
 }
 
 
-int factorial(long long int a){
+long long int factorial(long long int a){
 
     if(a==1){
         return 1;
@@ -57,7 +57,7 @@ int factorial(long long int a){
     return 0;
 }
 
-int fibonacci(int a){
+long long int fibonacci(int a){
     if(a==0){
         return 0;
     }
@@ -70,7 +70,7 @@ int fibonacci(int a){
     return 0;
 }
 
-int binomial_coefficient(long long int a,long long int b){
+long long int binomial_coefficient(long long int a,long long int b){
     if(a==b||b==0){
         return 1;
     }
@@ -80,7 +80,7 @@ int binomial_coefficient(long long int a,long long int b){
     return 0;
 }
 
-int power_module(long long int a,long long int b,long long int c){
+long long int power_module(long long int a,long long int b,long long int c){
     if(b==1){
         return a%c;
     }
