@@ -5,7 +5,7 @@ int main (){
     
     
 
-    /*
+    
     //query 1
     printf("What is the size of the matrix:");
 
@@ -29,10 +29,9 @@ int main (){
             printf("%d ", matrix[k][i]);
         }
     }
-    //sort it to transform it 90 degree, and print it out
-    */
+    //sort it to transform it to 90 degree, and print it out
+    
    
-/*
 
     printf("\n");
     //query 2
@@ -77,7 +76,9 @@ int main (){
             printf("The matrix is not symmetric!\n");
         }
         
-        */
+     }
+        
+        //query 3
         printf("Enter the number of input data:");
         scanf("%d", &times);
         
@@ -87,28 +88,35 @@ int main (){
         
         int matrix[size][size];
         int matrix2[size][size];
-        int *c = &matrix[0][0], *d = &matrix2[0][0];
+        int *c = &matrix[0][0], *d = &matrix2[0][0]; //set  matrix1[0][0] matrix2[0][0] address to *c *d
        
-        printf("the first matrix:");
-        for (int i = 0; i < size;i++){
-                scanf("%d", c + i);
+        printf("the first matrix:");//get the value of first matrix
+        for (int i = 0; i < size*size;i++){
+                scanf(" %d", c + i);
         }
-        printf("the second matrix:");
-        for (int i = 0; i < size;i++){
-                scanf("%d", d + i);
+        printf("the second matrix:");//get the value of second matrix
+        for (int i = 0; i < size*size;i++){
+                scanf(" %d", d + i);
+        }
+   
+        for (int i = 0; i < size;i++){//i use to change first matrix row when we finished the a row space
+            
+            for (int k = 0; k < size;k++){//k use to change second matrix column when we finished a answer
+                int sum = 0; //initialize sum
+                for (int l = 0; l < size;l++){//l use to multiply each matrix element to get a answer
+                    sum += (*(c + size*i + l)) * (*(d + k + (size * l)));//l use to 
+                }
+                printf("%d ", sum);
+            
+
+            }
+
+            
         }
 
-        for (int i = 0; i < size;i++){
-                printf("%d ", (*(c+i))*(*(d+i)));
-        }
 
+        
+
+        }
     
-        
-
-        //get matrix value
-
-        
-
-        }
-    }
 }
