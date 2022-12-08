@@ -7,12 +7,12 @@ int main (){
 
     
     //query 1
-    printf("What is the size of the matrix:");
+    printf("What is the size of the matrix: ");
 
     scanf("%d", &size);
     int matrix[size][size];
 
-    printf("Please enter the matrix:");
+    printf("Please enter the matrix: ");
 
     for (int i = 0; i < size;i++){
         for (int k = 0; k < size;k++){
@@ -36,15 +36,15 @@ int main (){
     printf("\n");
     //query 2
 
-    printf("Enter the number of input data:");
+    printf("Enter the number of input data: ");
 
     scanf("%d", &times);
 
     while(times--){
-        printf("What is the size of the matrix:");
+        printf("What is the size of the matrix: ");
         scanf("%d", &size);
         int matrix[size][size];
-        printf("Please enter the matrix:");
+        printf("Please enter the matrix: ");
 
         for (int i = 0; i < size;i++){
             for (int k = 0; k < size;k++){
@@ -75,26 +75,26 @@ int main (){
         else if (check==0){
             printf("The matrix is not symmetric!\n");
         }
-        
-     }
+        check = 1;
+    }
         
         //query 3
-        printf("Enter the number of input data:");
+        printf("Enter the number of input data: ");
         scanf("%d", &times);
         
-        while(times--){
-        printf("What is the size of the matrix:");
+    while(times--){
+        printf("What is the size of the matrix: ");
         scanf("%d", &size);
         
         int matrix[size][size];
         int matrix2[size][size];
         int *c = &matrix[0][0], *d = &matrix2[0][0]; //set  matrix1[0][0] matrix2[0][0] address to *c *d
        
-        printf("the first matrix:");//get the value of first matrix
+        printf("the first matrix: ");//get the value of first matrix
         for (int i = 0; i < size*size;i++){
                 scanf(" %d", c + i);
         }
-        printf("the second matrix:");//get the value of second matrix
+        printf("the second matrix: ");//get the value of second matrix
         for (int i = 0; i < size*size;i++){
                 scanf(" %d", d + i);
         }
@@ -103,20 +103,20 @@ int main (){
             
             for (int k = 0; k < size;k++){//k use to change second matrix column when we finished a answer
                 int sum = 0; //initialize sum
-                for (int l = 0; l < size;l++){//l use to multiply each matrix element to get a answer
-                    sum += (*(c + size*i + l)) * (*(d + k + (size * l)));//l use to 
-                }
+                    for (int l = 0; l < size;l++){//l use to multiply each matrix element to get a answer
+                        sum += (*(c + size*i + l)) * (*(d + k + (size * l)));//l use to 
+                    }
                 printf("%d ", sum);
             
 
-            }
+                }
 
             
-        }
+            }
 
 
         
-
-        }
-    
+        printf("\n");
+    }
+        
 }
