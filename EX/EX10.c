@@ -29,7 +29,7 @@ int main (){
             printf("%d ", matrix[k][i]);
         }
     }
-    //sort it to transform it to 90 degree, and print it out
+    //change its order to transform it rotating to 90 degree clockwise, and print it out
     
    
 
@@ -67,7 +67,7 @@ int main (){
             b--;
             
         }
-        //compare whether their value(*a and *b) are difference or not. if they are difference, they are not symmetric
+        //compare the difference between their value(*a and *b). if they are difference, they are not symmetric
 
         if(check==1){
             printf("The matrix is symmetric!\n");

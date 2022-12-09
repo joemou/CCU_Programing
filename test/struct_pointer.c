@@ -1,48 +1,48 @@
 #include<stdio.h>
-#include<stdbool.h>
-
-int fib(int f);
-
-
-int main(){
-    int inputs = 0,num=0,sum=0,on_off=0;
-
-    scanf("%d", &inputs);
-    
-    for (int k = 0; k < inputs;k++){
-        
-        scanf("%d", &num);
-        printf("%d = ", num);
-
-        for (int i = num;i>0;i--){
-            sum += fib(i);
-            if(sum<=num){
-                printf("1");
-                num -= fib(i);
-
-                on_off = 1;//開啟印0
-            }
-            else if(on_off==1){
-                printf("0");
-            }
-            sum = 0;
-            
-        }
-        printf(" (fib)\n");
-        on_off = 0;
-        
-
-    }
+ 
+int main()
+{
+ 	int i, j, rows, columns, a[10][10], b[10][10], Count = 1;
+  
+ 	printf("\n Please Enter Number of rows and columns  :  ");
+ 	scanf("%d %d", &i, &j);
+ 
+ 	printf("\n Please Enter the Matrix Elements \n");
+ 	for(rows = 0; rows < i; rows++)
+  	{
+   		for(columns = 0;columns < j;columns++)
+    	{
+      		scanf("%d", &a[rows][columns]);
+    	}
+  	}
+   	//Transpose of matrix 
+ 	for(rows = 0; rows < i; rows++)
+  	{
+   		for(columns = 0;columns < j; columns++)
+    	{
+      		b[columns][rows] = a[rows][columns];
+    	}
+  	}
+     
+ 	for(rows = 0; rows < i; rows++)
+  	{
+   		for(columns = 0; columns < j; columns++)
+    	{
+    		if(a[rows][columns] != b[rows][columns])
+    		{
+    			Count++;  
+				break;  		
+			}
+   	 	}
+  	}
+  	if(Count == 1)
+  	{
+  		printf("\n The Matrix that you entered is a Symmetric Matrix ");
+	}
+	else
+	{
+		printf("\n The Matrix that you entered is Not a Symmetric Matrix ");
+	}
+  	
+ 	return 0;
 }
-
-
-int fib(int f){
-    if(f<=1){
-        return 1;
-    }
-    if(f>1){
-        return fib(f - 1) + fib(f - 2);
-    }
-    return 0;
-}
-    
