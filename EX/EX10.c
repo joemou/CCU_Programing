@@ -7,12 +7,12 @@ int main (){
 
     
     //query 1
-    printf("What is the size of the matrix: ");
+   
 
     scanf("%d", &size);
     int matrix[size][size];
 
-    printf("Please enter the matrix: ");
+    
 
     for (int i = 0; i < size;i++){
         for (int k = 0; k < size;k++){
@@ -36,15 +36,15 @@ int main (){
     printf("\n");
     //query 2
 
-    printf("Enter the number of input data: ");
+   
 
     scanf("%d", &times);
 
     while(times--){
-        printf("What is the size of the matrix: ");
+       
         scanf("%d", &size);
         int matrix[size][size];
-        printf("Please enter the matrix: ");
+       
 
         for (int i = 0; i < size;i++){
             for (int k = 0; k < size;k++){
@@ -79,22 +79,22 @@ int main (){
     }
         
         //query 3
-        printf("Enter the number of input data: ");
+        
         scanf("%d", &times);
         
     while(times--){
-        printf("What is the size of the matrix: ");
+        
         scanf("%d", &size);
         
         int matrix[size][size];
         int matrix2[size][size];
         int *c = &matrix[0][0], *d = &matrix2[0][0]; //set  matrix1[0][0] matrix2[0][0] address to *c *d
        
-        printf("the first matrix: ");//get the value of first matrix
+       //get the value of first matrix
         for (int i = 0; i < size*size;i++){
                 scanf(" %d", c + i);
         }
-        printf("the second matrix: ");//get the value of second matrix
+        //get the value of second matrix
         for (int i = 0; i < size*size;i++){
                 scanf(" %d", d + i);
         }

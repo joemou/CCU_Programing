@@ -222,27 +222,31 @@ while(0<=area&&area<=3){
                         if (booster[2]==1){
                             printf("  [5] Area 5\n");
                     }   // if booster open
+                        
                         if(booster[2]!=1){
                         printf("  [5] Done\n");
                         }
-                            if(booster[2]==1){
+                        
+                        if(booster[2]==1){
                         printf("  [6] Done\n");
                     } // if booster open
+                        
+                        
                         printf("Enter the number(s): ");
                         scanf("%d", &check_selection);
                      if(check_selection>6||check_selection<1){
-                        printf("Invalid input!!!!\n");
-                        continue;
+                            printf("Invalid input!!!!\n");
+                            continue;
                      }   
                      if(result[check_selection]==1){
                         
-                         printf("Can't you tell how poor you are?\n");
-				         printf("Go vending your hotdogs instead of thinking about self-improvement!\n");
+                            printf("Can't you tell how poor you are?\n");
+				            printf("Go vending your hotdogs instead of thinking about self-improvement!\n");
                         
                      }    
                      else if(result[check_selection]==2){
-                         printf("Do you want to travel through time?\n");
-			             printf("GO WORK!!\n");
+                            printf("Do you want to travel through time?\n");
+			                printf("GO WORK!!\n");
                         
                      }
                       else if (result[check_selection] == 4){
