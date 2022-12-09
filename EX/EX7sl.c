@@ -1,10 +1,13 @@
 #include <stdio.h>
 
 int main(){
+    int selection,amountmoney=0,price=30; //可能重複
+
     int gamelotterysize =1;
     int gamelotteryshow[100][100]={0};
     int gamelotterydigit[100][100]={0};
     int gamelotteryreal[100][100]={0};
+    int booster[3]={0,0,0}; //0 speed 1 price 2 area
 
     int amountlotteryfree=0,amountlotterycost=500;
     int amountlotteryremain=0;
@@ -12,8 +15,8 @@ int main(){
     int flag;
 
     int tmpprizetype;
-    int tmpmaxdigitcnt,tmpnowdigitcnt;
-    int tmpmaxdigit=0,tmpnowdigit;
+    int tmpmaxdigitcnt=0,tmpnowdigitcnt;
+    int tmpmaxdigit,tmpnowdigit;
     int selectrow,selectcolumn;
 
     printf("You get one free choice.\n");
@@ -42,21 +45,113 @@ int main(){
 
             }
         }
+        flag = 0;//?
     }
 
     //印樂透
     tmpmaxdigit = gamelotterysize * gamelotterysize;
     tmpmaxdigitcnt = 0;
+    
     while(tmpmaxdigit){
         tmpmaxdigit /= 10;
         tmpmaxdigitcnt++;
     }
-
     for (int i = 0; i < gamelotterysize;i++){
         printf("+");
         for (int j = 0; j < gamelotterysize;j++){
-            for (int k = 0; k < tmpmaxdigitcnt + 2;k++)
-                printf("-");
+            for (int k = 0; k < tmpmaxdigitcnt + 2;k++)printf("-");
+            printf("+");
         }
+
+        printf("\n|");
+
+        for (int j = 0; j < gamelotterysize;j++){
+         if(gamelotteryreal[i][j]==-1){
+                for (int k = 0; k < tmpmaxdigitcnt - 1;k++)printf(" ");
+                printf(" x |");
+            }
+         else{
+                for (int k = 0; k < tmpmaxdigitcnt - gamelotterydigit[i][j];k++)printf("");
+                printf(" %d |", gamelotteryshow[i][j]);
+            }
+        }
+        printf("\n");
     }
+    
+    printf("+");
+    for (int j = 0; j < gamelotterysize;j++){
+        for (int k = 0; k < tmpmaxdigitcnt + 2;k++)printf("-");
+            printf("+");
+    }
+
+    printf("\n");
+
+    //choose lottery
+    while(1){
+    printf("You can choose\n");
+    printf("  [number on cell] to open (- %d)\n", amountlotteryfree == 0 ? amountlotterycost : 0);
+    printf("  [0] to continue the game\n");
+    printf("Enter the number(s): ");
+    scanf("%d", &selection);
+    selectrow = (selection - 1) / gamelotterysize;
+    selectcolumn = (selection - 1) % gamelotterysize;
+    if(selection<0||selection>gamelotterysize*gamelotterysize||gamelotteryreal[selectrow][selectcolumn]==-1){
+        printf("Invalid input!!!!");
+        continue;
+    }
+    if(selection==0)break;
+
+    //dertermine money
+    if(amountlotteryfree==0&&amountlotterycost>amountmoney){
+        printf("You have no money!");
+        break;
+    }
+    if(amountlotteryfree==0){
+        amountmoney -= amountlotterycost;
+        amountlotterycost += 500;
+    }
+    else{
+        amountlotteryfree--;
+    }
+    }
+
+    //run lottery
+
+    while(flag){
+        int lotterycontent = gamelotteryreal[selectrow][selectcolumn];
+        gamelotteryreal[selectrow][selectcolumn] = -1;
+        amountlotteryremain--;
+        
+        if (lotterycontent==1){
+            printf("Fortune, fortune! You get $%d!\n", 100 * price);
+            amountmoney += 100 * price;
+        }
+        else if(lotterycontent==2){
+            printf("You get an extra choice!\n");
+            amountlotteryfree++;
+        }
+        else if(lotterycontent>=7){
+            printf("You get a booster!!\n");
+            booster[lotterycontent - 7]++;
+        }
+        else if(lotterycontent>=3&&lotterycontent<=6){
+            if(lotterycontent==3)selectrow = (selectrow - 1 + gamelotterysize) % gamelotterysize;
+            else if(lotterycontent==4)selectrow = (selectrow + 1) % gamelotterysize;
+            else if(lotterycontent==5)selectcolumn = (selectcolumn -1+gamelotterysize) % gamelotterysize;
+            else if(lotterycontent==6)selectcolumn = (selectcolumn + 1) % gamelotterysize;
+            if(gamelotteryreal[selectrow][selectcolumn]==-1){
+                printf("Bad Luck :(\n");
+                break;
+            }
+            printf("Another open on %d!\n", selectrow * gamelotterysize * selectcolumn + 1);
+            flag = 1;
+            continue;
+        }
+        break;
+    }
+
+
+
+
+
 }
