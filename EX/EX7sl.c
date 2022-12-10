@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int main(){
-    int selection,amountmoney=0,price=30; //可能重複
+    int selection,amountmoney=100000,price=30; //可能重複
 
     int gamelotterysize =1;
     int gamelotteryshow[100][100]={0};
@@ -15,15 +15,17 @@ int main(){
     int flag;
 
     int tmpprizetype;
-    int tmpmaxdigitcnt=0,tmpnowdigitcnt;
+    int tmpmaxdigitcnt,tmpnowdigitcnt;
     int tmpmaxdigit,tmpnowdigit;
     int selectrow,selectcolumn;
 
     printf("You get one free choice.\n");
     amountlotteryfree++;
     flag=1;
-    //初始化
+    
     while(flag){
+        
+        //初始化
         if(amountlotteryremain==0){
             amountlotterycost=500;
             gamelotterysize+=2;
@@ -37,7 +39,7 @@ int main(){
                 while(tmpnowdigit){
                     tmpprizetype=tmpprizetype*16+tmpnowdigit%10;
                     tmpnowdigit/=10;
-                    tmpmaxdigitcnt++;
+                    tmpnowdigitcnt++;
                 }
                 gamelotteryreal[i][j]=tmpprizetype%9+1;
                 gamelotterydigit[i][j]=tmpnowdigitcnt;
@@ -45,79 +47,84 @@ int main(){
 
             }
         }
-        flag = 0;//?
-    }
-
-    //印樂透
-    tmpmaxdigit = gamelotterysize * gamelotterysize;
-    tmpmaxdigitcnt = 0;
+   
     
-    while(tmpmaxdigit){
+
+     //準備印樂透
+     tmpmaxdigit = gamelotterysize * gamelotterysize;
+     tmpmaxdigitcnt = 0;
+    
+     while(tmpmaxdigit){
         tmpmaxdigit /= 10;
         tmpmaxdigitcnt++;
-    }
-    for (int i = 0; i < gamelotterysize;i++){
+     }
+     //印樂透
+
+     for (int i = 0; i < gamelotterysize;i++){
         printf("+");
         for (int j = 0; j < gamelotterysize;j++){
             for (int k = 0; k < tmpmaxdigitcnt + 2;k++)printf("-");
             printf("+");
         }
 
+
         printf("\n|");
 
         for (int j = 0; j < gamelotterysize;j++){
          if(gamelotteryreal[i][j]==-1){
-                for (int k = 0; k < tmpmaxdigitcnt - 1;k++)printf(" ");
+                for (int k = 0; k < tmpmaxdigitcnt - 1;k++){printf(" ");}
                 printf(" x |");
             }
          else{
-                for (int k = 0; k < tmpmaxdigitcnt - gamelotterydigit[i][j];k++)printf("");
+                for (int k = 0; k < tmpmaxdigitcnt - gamelotterydigit[i][j];k++){ printf(" ");}
                 printf(" %d |", gamelotteryshow[i][j]);
             }
         }
         printf("\n");
-    }
+
+
+     }
     
-    printf("+");
-    for (int j = 0; j < gamelotterysize;j++){
+     printf("+");
+     for (int j = 0; j < gamelotterysize;j++){
         for (int k = 0; k < tmpmaxdigitcnt + 2;k++)printf("-");
             printf("+");
-    }
+     }
 
-    printf("\n");
+     printf("\n");
 
-    //choose lottery
-    while(1){
-    printf("You can choose\n");
-    printf("  [number on cell] to open (- %d)\n", amountlotteryfree == 0 ? amountlotterycost : 0);
-    printf("  [0] to continue the game\n");
-    printf("Enter the number(s): ");
-    scanf("%d", &selection);
-    selectrow = (selection - 1) / gamelotterysize;
-    selectcolumn = (selection - 1) % gamelotterysize;
-    if(selection<0||selection>gamelotterysize*gamelotterysize||gamelotteryreal[selectrow][selectcolumn]==-1){
-        printf("Invalid input!!!!");
+     //choose lottery
+
+     printf("You can choose\n");
+     printf("  [number on cell] to open (- %d)\n", amountlotteryfree == 0 ? amountlotterycost : 0);
+     printf("  [0] to continue the game\n");
+     printf("Enter the number(s): ");
+     scanf("%d", &selection);
+     selectrow = (selection - 1) / gamelotterysize;
+     selectcolumn = (selection - 1) % gamelotterysize;
+     if(selection<0||selection>gamelotterysize*gamelotterysize||gamelotteryreal[selectrow][selectcolumn]==-1){
+        printf("Invalid input!!!!\n");
         continue;
-    }
-    if(selection==0)break;
+     }
+     if(selection==0)break;
 
-    //dertermine money
-    if(amountlotteryfree==0&&amountlotterycost>amountmoney){
-        printf("You have no money!");
+     //dertermine money
+     if(amountlotteryfree==0&&amountlotterycost>amountmoney){
+        printf("You have no money!\n");
         break;
-    }
-    if(amountlotteryfree==0){
+     }
+     if(amountlotteryfree==0){
         amountmoney -= amountlotterycost;
         amountlotterycost += 500;
-    }
-    else{
+     }
+     else{
         amountlotteryfree--;
-    }
-    }
+     }
+    
 
-    //run lottery
+     //run lottery
 
-    while(flag){
+     while(flag){
         int lotterycontent = gamelotteryreal[selectrow][selectcolumn];
         gamelotteryreal[selectrow][selectcolumn] = -1;
         amountlotteryremain--;
@@ -148,9 +155,9 @@ int main(){
             continue;
         }
         break;
+     }
+
     }
-
-
 
 
 
