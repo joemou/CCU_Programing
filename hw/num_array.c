@@ -34,3 +34,22 @@ void swap(int **arr1,int **arr2,int n){
     *arr1 = *arr2;
     *arr2 = temp;
 }
+
+
+/*void swap(int *num1, int *num2); //先告訴電腦說我有一個函式
+int main()
+{
+    int a = 10;
+    int b = 25;
+    printf("a is %d\n, b is %d", a, b);
+    swap(&a, &b); // 分別傳入記憶體位址
+    printf("a is %d\n, b is %d", a, b);
+    return 0;
+}
+void swap(int *num1, int *num2)
+{
+     int temp;
+     temp = *num1;
+     *num1 = *num2;
+     *num2 = temp;
+}

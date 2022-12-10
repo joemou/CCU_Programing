@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int main(){
-    int selection,amountmoney=100000,price=30; //可能重複
+    int selection,money=100000,price=30; //可能重複
 
     int gamelotterysize =1;
     int gamelotteryshow[100][100]={0};
@@ -109,12 +109,12 @@ int main(){
      if(selection==0)break;
 
      //dertermine money
-     if(amountlotteryfree==0&&amountlotterycost>amountmoney){
+     if(amountlotteryfree==0&&amountlotterycost>money){
         printf("You have no money!\n");
         break;
      }
      if(amountlotteryfree==0){
-        amountmoney -= amountlotterycost;
+        money -= amountlotterycost;
         amountlotterycost += 500;
      }
      else{
@@ -131,7 +131,7 @@ int main(){
         
         if (lotterycontent==1){
             printf("Fortune, fortune! You get $%d!\n", 100 * price);
-            amountmoney += 100 * price;
+            money += 100 * price;
         }
         else if(lotterycontent==2){
             printf("You get an extra choice!\n");
