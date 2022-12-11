@@ -150,7 +150,7 @@ int main(){
                 printf("Bad Luck :(\n");
                 break;
             }
-            printf("Another open on %d!\n", selectrow * gamelotterysize * selectcolumn + 1);
+            printf("Another open on %d!\n", selectrow * gamelotterysize + selectcolumn + 1);
             flag = 1;
             continue;
         }

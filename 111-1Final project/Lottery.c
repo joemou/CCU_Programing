@@ -1,13 +1,17 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 int main(){
-    int selection,money=100000,price=30; //可能重複
+    int selection,money=1000000,price=30; //可能重複
 
     int gamelotterysize =1;
     int gamelotteryshow[100][100]={0};
     int gamelotterydigit[100][100]={0};
     int gamelotteryreal[100][100]={0};
-    int booster[3]={0,0,0}; //0 speed 1 price 2 area
+    int booster_owned[3]={0,0,0}; //0 speed 1 price 2 area
+    int booster_have = 0;
+    int i = 0;
 
     int amountlotteryfree=0,amountlotterycost=500;
     int amountlotteryremain=0;
@@ -22,9 +26,16 @@ int main(){
     printf("You get one free choice.\n");
     amountlotteryfree++;
     flag=1;
-    
+    time_t t;
+
+    srand(time(&t));
+    int booster_slot=((rand() % 11)+5);
+    int booster_record[booster_slot];
+
+    printf("%d\n", booster_slot);
+
     while(flag){
-        
+        srand(time(&t));
         //初始化
         if(amountlotteryremain==0){
             amountlotterycost=500;
@@ -41,7 +52,8 @@ int main(){
                     tmpnowdigit/=10;
                     tmpnowdigitcnt++;
                 }
-                gamelotteryreal[i][j]=tmpprizetype%9+1;
+                
+                gamelotteryreal[i][j]=((rand() % 9)+1);
                 gamelotterydigit[i][j]=tmpnowdigitcnt;
                 }
 
@@ -139,7 +151,29 @@ int main(){
         }
         else if(lotterycontent>=7){
             printf("You get a booster!!\n");
-            booster[lotterycontent - 7]++;
+            
+            if( booster_have<booster_slot){
+
+            booster_have++;
+            booster_owned[lotterycontent - 7]++;
+            booster_record[i] = lotterycontent - 7;
+            i++;
+            printf("speed %d price %d area %d\n",booster_owned[0],booster_owned[1],booster_owned[2]);
+            }
+
+    
+            else {
+            booster_owned[booster_record[0]]--;
+            booster_owned[lotterycontent - 7]++;
+            printf("discard %d get %d\n", booster_record[0], lotterycontent - 7);
+
+            for (int k = 0; k < booster_slot;k++){
+                booster_record[k] = booster_record[k + 1];
+            }
+            booster_record[booster_slot - 1] = lotterycontent - 7;
+            
+            printf("speed %d price %d area %d\n",booster_owned[0],booster_owned[1],booster_owned[2]);
+            }
         }
         else if(lotterycontent>=3&&lotterycontent<=6){
             if(lotterycontent==3)selectrow = (selectrow - 1 + gamelotterysize) % gamelotterysize;
@@ -150,7 +184,7 @@ int main(){
                 printf("Bad Luck :(\n");
                 break;
             }
-            printf("Another open on %d!\n", selectrow * gamelotterysize * selectcolumn + 1);
+            printf("Another open on %d!\n", selectrow * gamelotterysize + selectcolumn + 1);
             flag = 1;
             continue;
         }
