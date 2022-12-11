@@ -18,9 +18,9 @@ int booster_slot=((rand() % 11)+5);
 
 printf("You have %d slot for booster\n", booster_slot);
 while (start==1){
-selling_hotdog(&money, &price,&start, booster_owned);
-if(start==2)break;
-lottery(&money, &price,&booster_slot, booster_owned);
+    selling_hotdog(&money, &price,&start, booster_owned);
+    if(start==2)break;
+    lottery(&money, &price,&booster_slot, booster_owned);
 }
 
 }
