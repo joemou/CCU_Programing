@@ -536,7 +536,7 @@ void map_control(int *money,int *booster_owned){
     		y=y-1;//up
             if(y!=-1){
                 map_print(y,x,b,money,booster_owned);
-                money -= 25;
+                *money -= 25;
             }
 
             else{ 
@@ -551,7 +551,7 @@ void map_control(int *money,int *booster_owned){
 
             if(y!=8){
                 map_print(y,x,b,money,booster_owned);
-                money -= 25;
+                *money -= 25;
             }
 
             else{ 
@@ -565,7 +565,7 @@ void map_control(int *money,int *booster_owned){
 
             if(x!=-1){
                 map_print(y,x,b,money,booster_owned);
-                money -= 25;
+                *money -= 25;
             }
 
             else{ 
@@ -579,7 +579,7 @@ void map_control(int *money,int *booster_owned){
 
             if(x!=8){
                 map_print(y,x,b,money,booster_owned);
-                money -= 25;
+                *money -= 25;
             }
 
             else{ 
@@ -635,7 +635,7 @@ void map_print(int i, int j,int *b,int *money,int *booster_owned){
      }
     }
     printf("\n");
-    printf("%d %d %d %d $%d\n", b[0], b[1], i, j,*money);
+    printf("money you have: $%d\n",*money);
      
      
      if ((b[0] == i)&&(b[1]== j)){
