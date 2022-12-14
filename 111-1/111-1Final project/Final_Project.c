@@ -9,6 +9,7 @@ void map_control(int *money,int *booster_owned);
 void map_print(int i, int j,int *b,int *money,int *booster_owned);
 
 int main(){
+
 int money = 100, price = 30;
 int booster_owned[3]={0,0,0}; //0 speed 1 price 2 area
 int start = 1;
