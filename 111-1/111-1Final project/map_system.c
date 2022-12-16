@@ -1,14 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
+#include <windows.h>
 #include <time.h>
 
 void map(int i, int j,int *b,int *money,int *booster_owned);
+void gotoxy(int x,int y){ //回撥游標
+COORD pos;
+pos.X=x-1;
+pos.Y=y-1;
+SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
+};
+void HideCursor(){ //隱藏游標函式
+CONSOLE_CURSOR_INFO cursor;
+cursor.bVisible = FALSE;
+cursor.dwSize = sizeof(cursor);
+HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+SetConsoleCursorInfo(handle,&cursor);
+}
+
 int main(){
     int start = 1;
     int i=0;
     int x = 0, y = 0;
     int money = 1000000;
-    int booster_owned[3];
+    int booster_owned[3]={0,0,0};
     time_t t;
     int  b[4];//money and booster coordinate
     srand(time(&t));   
@@ -23,6 +39,7 @@ int main(){
         map(x, y, b,&money,booster_owned);
 
     while(start!=0){
+
      printf("\nPlease input (1: up, 2: down, 3: left, and 4: right 5: finished) to indicate move action.\n25$ for each action.\nENTER:");
 
      scanf("%d", &i);
@@ -94,6 +111,9 @@ int main(){
 
 
 void map(int i, int j,int *b,int *money,int *booster_owned){
+
+
+    gotoxy(1,1);
     int a[9][9];
     int x, y;
     time_t t;
@@ -112,11 +132,10 @@ void map(int i, int j,int *b,int *money,int *booster_owned){
     a[b[0]][b[1]] = 2;//determine the place of money award is 2
     a[b[2]][b[3]] = 3;//determine the plcae of booster award is 3
     a[i][j] = 1;//determine the person place. person is 1.
-        
 
 
-    
-    
+    HideCursor(); //隱藏游標
+    gotoxy(1,1); //回撥游標、重新整理畫面
     for (x = 0; x < 8;x++){
         printf("\n");
       for (y = 0; y < 8;y++){
@@ -131,16 +150,17 @@ void map(int i, int j,int *b,int *money,int *booster_owned){
 
      }
     }
+
     printf("\n");
     printf("%d %d %d %d\n", b[0], b[1], i, j);
      
      
      if ((b[0] == i)&&(b[1]== j)){
+
         printf("Fortune!Fortune! You earn %d !!!!\n", (b[0] + 1) * (b[1] + 1) * 10);
         *money += (b[0] + 1) * (b[1] + 1) * 10;
         b[0] = b[1] = -1; //let it outside the board
         }
-
      if((b[2]==i)&&(b[3]==j)){
         printf("Congratulation, you earn a booster\n");
         booster_owned[rand() % 3] += 1;

@@ -69,7 +69,7 @@ void Startup(){ //游戏数值初始化
  canvas[pos_h][pos_w]=plane; //初始化飞机位置
  enemynum=3; //敌机数量
  srand(time(NULL));
- interval=4; //初始化时间间隔计数
+ interval=3; //初始化时间间隔计数
  itv_move=5; //初始化敌机移动时间间隔
  itv_new =40; //初始化敌机刷新时间间隔
 }

@@ -4,46 +4,82 @@
 #include <windows.h>
 #include <time.h>
 
+
+//definiation for aircaft_game
+#define high 25 //background hight
+#define width 60 //background with
+#define border -1 //the edge of the game
+#define blank 0 //blank space
+#define plane 1 //plane
+#define bullet 2 //bullet
+#define enemy 3 //enemy plane
+#define destroy 4 //plane destroyed
+
 //function for the part of selling hot dog 
 void selling_hotdog(int *money, int *price,int *start, int *booster_owned);
 void lottery(int *money, int *price, int *booster_slot, int *booster_owned);
 
-//function for the map systen
+//function for the map system
 void map_control(int *money,int *booster_owned);
 void map_print(int i, int j,int *b,int *money,int *booster_owned);
 
 //function for the aircraft game
+void aircraft_main(int *money, int *booster_slot, int *booster_owned,int *day);
+void UpdateInput(int *money, int *booster_slot, int *booster_owned,int canvas[high+2][width+2],int *pos_h,int *pos_w,int *enemynum,
+int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver);
+void UpdateNormal(int *money, int *booster_slot, int *booster_owned,int canvas[high+2][width+2],int *pos_h,int *pos_w,int *enemynum,
+int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver);
+void Show(int *money, int *booster_slot, int *booster_owned,int canvas[high+2][width+2],int *pos_h,int *pos_w,int *enemynum,
+int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver);
 
 
-//function for map and aircraft game
-void gotoxy(int x,int y){ //set the output place
+//function for map ,aircraft game and lottery
+
+//set the output place
+void gotoxy(int x,int y){ 
 COORD pos;
 pos.X=x-1;
 pos.Y=y-1;
 SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
 };
-void HideCursor(){ //hide cursor
+//function to hide cursor
+void HideCursor(){ 
 CONSOLE_CURSOR_INFO cursor;
 cursor.bVisible = FALSE;
 cursor.dwSize = sizeof(cursor);
 HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 SetConsoleCursorInfo(handle,&cursor);
 };
+//function to simulate system pause
+void Waiting(){
+char c;
+printf("\nPleae press space to continue\n");
+while(1){
+    if((c=getch())==' '){
+        break;
+    }
+}
+};
+
+
 
 int main(){
+    system("C:\\Users\\zxc12\\Desktop\\CCU.png");//output image
+    int money = 100, price = 30, day = 1; // set the variable day to increase difficulty
+    int booster_owned[3] = {0, 0, 0};     // 0 speed 1 price 2 area
+    int start = 1;
+    time_t t;
+    srand(time(&t));                        // set seed
+    int booster_slot = ((rand() % 11) + 5); // create random slot space
 
-int money = 100, price = 30;
-int booster_owned[3]={0,0,0}; //0 speed 1 price 2 area
-int start = 1;
-time_t t;
-srand(time(&t));
-int booster_slot=((rand() % 11)+5);
+    printf("You have %d slot for booster\n", booster_slot);
+    while (start == 1)
+    {
 
-printf("You have %d slot for booster\n", booster_slot);
-while (start==1){
     selling_hotdog(&money, &price,&start, booster_owned);
     if(start==2)break;
     lottery(&money, &price,&booster_slot, booster_owned);
+    aircraft_main(&money,&booster_slot, booster_owned,&day);  
 }
 
 }
@@ -68,12 +104,14 @@ int earn = 0,total_earn=0;
 int check_selection=0;
 int booster[3] = {0, 0, 0};
 
+
 printf("Welcome, young boss!\n");
 
 
     booster_switch = 0;
     area = 0;
     check_selection = 0;
+
     printf("Chop chop, It's dawn.\n");
     printf("You have %d dollars.\n", *money);
     printf("You need %d minutes to make a hotdog.\n", speed);
@@ -366,14 +404,18 @@ int tmpprizetype;
 int tmpmaxdigitcnt,tmpnowdigitcnt;
 int tmpmaxdigit,tmpnowdigit;
 int selectrow,selectcolumn;
-
 time_t t;
+    
 
     printf("You get one free choice.\n");
     amountlotteryfree++;
     flag=1;
     
     while(flag){
+        system("cls");
+        HideCursor(); //hide cursor
+        gotoxy(1,1); //set the print space
+
         srand(time(&t));//set seed
 
 
@@ -463,6 +505,7 @@ time_t t;
      //dertermine money
      if(amountlotteryfree==0&&amountlotterycost>*money){
         printf("You have no money!\n");
+        Waiting();
         break;
      }
      if(amountlotteryfree==0){
@@ -530,8 +573,10 @@ time_t t;
         }
         break;
      }
-
+     Waiting();
     }
+
+
 
 }
 
@@ -544,6 +589,9 @@ void map_control(int *money,int *booster_owned){
     srand(time(&t));   
     
     //generate random number for coordinate and prevent their coordinate to overlaping
+    system("cls");
+    printf("You have entered the mysterious CCU maze,you can find the treasure at here\n");
+    Waiting();
     do{
 
         for (int l = 0; l < 4;l++){
@@ -553,9 +601,10 @@ void map_control(int *money,int *booster_owned){
     } while ((b[0]==b[1]==b[2]==b[3]));
 
         map_print(y, x, b,money,booster_owned);
+    
 
     while(start!=0){
-     printf("\nYou Enter the mysterious Maze.\nPlease input (1: up, 2: down, 3: left, and 4: right 5: finished) to indicate move action.\n25$ for each action.\nENTER:");
+     printf("Please input (1: up, 2: down, 3: left, and 4: right 5: finished) to indicate move action.\n25$ for each action.\nENTER:");
 
      scanf("%d", &i);
 
@@ -636,8 +685,8 @@ void map_control(int *money,int *booster_owned){
 
 void map_print(int i, int j,int *b,int *money,int *booster_owned){
     system("cls");
-    HideCursor(); //隱藏游標
-    gotoxy(1,1); //回撥游標、重新整理畫面
+    HideCursor(); 
+    gotoxy(1,1); 
     int a[9][9];
     int x, y;
     time_t t;
@@ -693,3 +742,241 @@ void map_print(int i, int j,int *b,int *money,int *booster_owned){
     }
     
 }
+
+void aircraft_main(int *money, int *booster_slot, int *booster_owned,int *day){
+    
+    system("cls");
+    printf("Warning!!!!!on your way home,you have been besieged by space hot dog pirates.\n");
+    printf("Try to elminate (%d) hot dog pirates then you can escape and home back to CCU\n\n",(*day)*10);
+    printf("Please notice:\nOne laser bullet cost $30\nElminate one enemy plane can get $100\nThe difficulty will be harder when the day passes by\n"
+    "IF YOU ARE ELIMINATED,YOU WILL LOOSE ALL PROPERTIES\n\n");
+    Waiting();
+    system("cls");
+
+    int pos_h = high / 2, pos_w = width / 2; // the position of plane
+    int canvas[high + 2][width + 2];         // game background scope
+    int enemynum = 3;                        // the number of planes
+    int interval = 4;                        // simulate time gap
+    int itv_move = 6;                        // the time gap of enemy aircraft
+    int itv_new = 50;                        // the time of enemy  plane refreshing
+    int score = 0;                           // score
+    int IsOver = 1;                          // determine the game if end
+
+    //set difficulty according to day passing by
+    if(itv_move>1){//increase enemy speed
+        itv_move -= *day; 
+    }
+    if(itv_new>10){//decrease interval time
+        itv_new -= (*day)*10;
+    }
+
+    for (int i = 0; i < high + 2; i++)
+    { // initialize the canvas
+        for (int j = 0; j < width + 2; j++)
+        {
+            if(i==0 || i==high+1 ||j==0 || j==width+1){
+                canvas[i][j]=border;//intitialize the border
+            }
+            else canvas[i][j]=blank;//initialize the blank
+        }
+    }
+canvas[pos_h][pos_w]=plane; //initalize position
+srand(time(NULL));
+
+
+//game loop
+while(IsOver&&(score<((*day)*10))){ 
+    //update when user input
+    UpdateInput(money,booster_slot,booster_owned,canvas,&pos_h,&pos_w,&enemynum,
+    &interval ,&itv_move,&itv_new ,&score,&IsOver);
+
+    //the infunce of user input
+    UpdateNormal(money,booster_slot,booster_owned,canvas,&pos_h,&pos_w,&enemynum,
+    &interval ,&itv_move,&itv_new ,&score,&IsOver);
+
+    //print out the result
+    Show(money,booster_slot,booster_owned,canvas,&pos_h,&pos_w,&enemynum,
+    &interval ,&itv_move,&itv_new ,&score,&IsOver);
+
+
+}
+
+
+
+if(IsOver==0){
+    printf("\nGAME OVER!\nYOU LOOSE EVERYTHING!\nPOOR YOU!\n");
+    *money = 0;
+    for (int i = 0; i < 3;i++){
+        booster_owned[i] = 0;
+    }
+
+}
+else if((score>=((*day)*10))){
+    printf("\nCongratulation!You break through the enemy barricade\n");
+    printf("You earned %d from the hot dog pirate\n", (*day) * 100*10);
+    
+
+}
+    printf("See you next day\n5 seconds to next day");
+    Sleep(5000); //pause 5 sec to next part 
+
+
+    system("cls");//clean the terminal
+    (*day)++;
+}
+
+void UpdateInput(int *money, int *booster_slot, int *booster_owned,int canvas[high+2][width+2],int *pos_h,int *pos_w,int *enemynum,
+int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver){
+
+ // detect user input. if user input return false
+ char key_W = GetKeyState('W'),
+      key_S = GetKeyState('S'),
+      key_A = GetKeyState('A'),
+      key_D = GetKeyState('D'),
+      key_attack = GetKeyState(' ');
+
+
+ if (kbhit()){ //when user input something
+    if (key_W < 0){ //when w become flase
+        if(*pos_h>1){//make sure the place in front of plane is not border
+            canvas[*pos_h][*pos_w]=blank;//setting the position where plane previous stayed be blank
+            if(canvas[*pos_h-1][*pos_w] == enemy){ //if the place moving to is enemy plane then destroyed and game over
+                canvas[*pos_h-1][*pos_w]= destroy;
+                *IsOver=0;
+            }
+            else canvas[--(*pos_h)][*pos_w]=plane;//else nothing happend then move
+        }
+    }
+    if(key_S<0){ //when s become false
+        if(*pos_h<high){
+            canvas[*pos_h][*pos_w]=blank;
+            if(canvas[*pos_h+1][*pos_w] == enemy){ 
+                canvas[*pos_h+1][*pos_w]= destroy;
+                *IsOver=0;
+            }
+            else canvas[++(*pos_h)][*pos_w]=plane;
+        }
+    }
+    if(key_A<0){ //when a become false
+        if(*pos_w>1){
+            canvas[*pos_h][*pos_w]=blank;
+            if(canvas[*pos_h][*pos_w-1] == enemy){ 
+                canvas[*pos_h][*pos_w-1]= destroy;
+                *IsOver=0;
+            }
+            else canvas[*pos_h][--(*pos_w)]=plane;
+        }
+    }
+    if(key_D<0){ //when d become false
+        if(*pos_w<width){
+            canvas[*pos_h][*pos_w]=blank;
+            if(canvas[*pos_h][*pos_w+1] == enemy){ 
+                canvas[*pos_h][*pos_w+1]= destroy;
+                *IsOver=0;
+            }
+            else canvas[*pos_h][++(*pos_w)]=plane;
+        }
+    }
+    if(key_attack<0){ //when space become false
+        if(*pos_h!=1)canvas[*pos_h-1][*pos_w]=bullet;//if the the place in fornt of the plane is not the border then print the bullet in front of plane
+        (*money) -= 20;
+    }
+
+
+}
+
+
+
+}
+void UpdateNormal(int *money, int *booster_slot, int *booster_owned,int canvas[high+2][width+2],int *pos_h,int *pos_w,int *enemynum,
+int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver){
+
+int temp[high+2][width+2]; 
+
+for(int i=1;i<=high;i++){
+    for(int j=1;j<=width;j++){
+        temp[i][j]=canvas[i][j];//copy data from canvas to create temp canvas but not copy the border
+    }
+}
+
+
+for(int i=1;i<=high;i++){ 
+    for(int j=1;j<=width;j++){
+        if(temp[i][j]==enemy && *interval%*itv_move==0){ //the code for the enemy plane
+            canvas[i][j]=blank;
+            if(temp[i+1][j]==bullet){ //if laser is in front of the plane
+                canvas[i+1][j]=blank;// then enemy plane destroyed at i+1
+                (*score)++;
+                (*money) += 100;
+                printf("\a"); //the windows system sound
+            }
+            else if(i<high){
+                canvas[i+1][j]=enemy;//if the place in fornt of the enemy plane is not border then i+1 is enemy plane
+            }
+            if(i+1==*pos_h&&j==*pos_w){ //is i+1 and j is player then player destroyed
+                canvas[i+1][j]=destroy;
+                *IsOver=0;
+            }
+        }
+        if(temp[i][j]==bullet){ //the code for bullet
+            canvas[i][j]=blank;
+            if(temp[i-1][j]==enemy){ //if enemy is in fornt of bullet then destroyed and bullet disaapear
+                canvas[i-1][j]=blank;
+                (*score)++;
+                (*money) += 100;
+                printf("\a");
+            }
+            else if(i>1){
+                canvas[i-1][j]=bullet;//else bullet keep flying
+            }
+        }
+    }
+}
+
+if(*interval%*itv_new==0){ //if time go through a interval create enemynum enemy at random space
+    for(int i=0;i<*enemynum;i++){
+        canvas[rand()%2+1][rand()%width+1]=enemy;
+    }
+}
+
+if(*interval<=100){ //simulate time
+    (*interval)++;
+}
+else{ //when count to 100 go to zero again
+ *interval=0;
+}
+
+}
+
+void Show(int *money, int *booster_slot, int *booster_owned,int canvas[high+2][width+2],int *pos_h,int *pos_w,int *enemynum,
+int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver){
+HideCursor(); 
+gotoxy(1,1); 
+for(int i=0;i<high+2;i++){
+    for(int j=0;j<width+2;j++){
+        if( canvas[i][j] == plane ){ //the position of plane
+            printf("A");
+        }
+        else if( canvas[i][j] == bullet ){ //the position of bullet
+            printf("|");
+        }
+        else if( canvas[i][j] == enemy ){ //the position of enemy plane
+            printf("W");
+        }
+        else if( canvas[i][j] == border ){ //the position of border
+            printf("-");
+        }
+        else if( canvas[i][j] == blank ){ //the position of blank space
+            printf(" ");
+        }
+        else if( canvas[i][j] == destroy ){ //plane destroyed
+            printf("X");
+        }
+    }
+ printf("\n");
+}
+ printf("\nscore:%d money:%d",*score,*money);
+}
+
+
+
