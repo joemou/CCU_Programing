@@ -27,6 +27,7 @@
     ],
     "clang.completion.enable": true,
     "files.associations": {
-      "typeinfo": "c"
+      "typeinfo": "c",
+      "stdlib.h": "c"
     }
   }

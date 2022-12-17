@@ -100,7 +100,7 @@ for(int i=0;i<high+2;i++){
             printf("-");
         }
         else if( canvas[i][j] == blank ){ //當前位置無物，且在邊界內
-            printf("0");
+            printf(" ");
         }
         else if( canvas[i][j] == destroy ){ //當前位置無物，且在邊界內
             printf("x");
@@ -168,7 +168,8 @@ void UpdateInput(){
     if(key_attack<0){ //when space become false
         if(pos_h!=1)canvas[pos_h-1][pos_w]=bullet;//if the the place in fornt of the plane is not the border then print the bullet in front of plane
     }
-}
+    getch();
+  }
 }
 
 

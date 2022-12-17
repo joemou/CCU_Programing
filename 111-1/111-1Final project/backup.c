@@ -5,6 +5,7 @@
 #include <time.h>
 
 
+
 //definiation for aircaft_game
 #define high 25 //background hight
 #define width 60 //background with
@@ -32,35 +33,14 @@ int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver);
 void Show(int *money, int *booster_slot, int *booster_owned,int canvas[high+2][width+2],int *pos_h,int *pos_w,int *enemynum,
 int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver);
 
-
-//function for map ,aircraft game and lottery
-
 //set the output place
-void gotoxy(int x,int y){ 
-COORD pos;
-pos.X=x-1;
-pos.Y=y-1;
-SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
-};
+void gotoxy(int x, int y);
 //function to hide cursor
-void HideCursor(){ 
-CONSOLE_CURSOR_INFO cursor;
-cursor.bVisible = FALSE;
-cursor.dwSize = sizeof(cursor);
-HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
-SetConsoleCursorInfo(handle,&cursor);
-};
-//function to simulate system pause
-void Waiting(){
-char c;
-printf("\nPleae press space to continue\n");
-while(1){
-    if((c=getch())==' '){
-        break;
-    }
-}
-};
-
+void HideCursor();
+//simulate system pause
+void Waiting();
+//Becaue the buffer from the aircrat game (using kbhit()), we need to clean buffer
+void clean_buffer();
 
 
 int main(){
@@ -90,10 +70,10 @@ int main(){
 
 
 void selling_hotdog(int *money, int *price,int *start, int *booster_owned){
-int speed = 15;
-int booster_switch=0;
+int speed = 15;//default making hot dog speed
+int booster_switch=0;//using to turn on or off the booster
 int area = 1;
-int activity[5]={0};
+int activity[5]={0};//using to 
 int game_time = 180;
 int number_of_hotdog = 0;
 int result[5] = {0};
@@ -117,6 +97,9 @@ printf("Welcome, young boss!\n");
     printf("You need %d minutes to make a hotdog.\n", speed);
     printf("The price of a hotdog is $%d.\n", *price);
     printf("You have %d speed booster(s), %d price booster(s), %d area booster(s).\n", booster_owned[0], booster_owned[1], booster_owned[2]);
+
+
+    
 
     while (booster_switch != 4)
     {
@@ -802,21 +785,24 @@ while(IsOver&&(score<((*day)*10))){
 }
 
 
-
-if(IsOver==0){
+if (IsOver == 0)
+{
     printf("\nGAME OVER!\nYOU LOOSE EVERYTHING!\nPOOR YOU!\n");
     *money = 0;
-    for (int i = 0; i < 3;i++){
-        booster_owned[i] = 0;
+    for (int i = 0; i < 3; i++)
+    {
+            booster_owned[i] = 0;
+    }
+    }
+    else if ((score >= ((*day) * 10)))
+    {
+            printf("\nCongratulation!You break through the enemy barricade\n");
+            printf("You earned %d from the hot dog pirate\n", (*day) * 100 * 10);
     }
 
-}
-else if((score>=((*day)*10))){
-    printf("\nCongratulation!You break through the enemy barricade\n");
-    printf("You earned %d from the hot dog pirate\n", (*day) * 100*10);
-    
+    clean_buffer();
 
-}
+
     printf("See you next day\n5 seconds to next day");
     Sleep(5000); //pause 5 sec to next part 
 
@@ -845,6 +831,8 @@ int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver){
                 *IsOver=0;
             }
             else canvas[--(*pos_h)][*pos_w]=plane;//else nothing happend then move
+
+            
         }
     }
     if(key_S<0){ //when s become false
@@ -855,6 +843,8 @@ int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver){
                 *IsOver=0;
             }
             else canvas[++(*pos_h)][*pos_w]=plane;
+
+            
         }
     }
     if(key_A<0){ //when a become false
@@ -865,6 +855,8 @@ int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver){
                 *IsOver=0;
             }
             else canvas[*pos_h][--(*pos_w)]=plane;
+
+            
         }
     }
     if(key_D<0){ //when d become false
@@ -875,15 +867,18 @@ int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver){
                 *IsOver=0;
             }
             else canvas[*pos_h][++(*pos_w)]=plane;
+            
         }
     }
     if(key_attack<0){ //when space become false
-        if(*pos_h!=1)canvas[*pos_h-1][*pos_w]=bullet;//if the the place in fornt of the plane is not the border then print the bullet in front of plane
+        if(*pos_h!=1){canvas[*pos_h-1][*pos_w]=bullet;}//if the the place in fornt of the plane is not the border then print the bullet in front of plane
         (*money) -= 20;
+        
+        }
+        
+
+
     }
-
-
-}
 
 
 
@@ -977,6 +972,36 @@ for(int i=0;i<high+2;i++){
 }
  printf("\nscore:%d money:%d",*score,*money);
 }
+void gotoxy(int x,int y){ 
+COORD pos;
+pos.X=x-1;
+pos.Y=y-1;
+SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
+}
+void HideCursor(){ 
+CONSOLE_CURSOR_INFO cursor;
+cursor.bVisible = FALSE;
+cursor.dwSize = sizeof(cursor);
+HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+SetConsoleCursorInfo(handle,&cursor);
+}
+void Waiting(){
+    char c;
+    printf("\nPleae press space to continue\n");
+    while (1)
+    {
+        if ((c = getch()) == ' ')
+        {
+            break;
+        }
+    }
+}
+void clean_buffer(){
+    char clean;
+    printf("\n\nPress Enter To Next Day\n\n");
+    while((clean=(getch()))=='a'||clean=='w'||clean=='s'||clean=='d'||clean==' '){
+    
+    }
 
-
+}
 
