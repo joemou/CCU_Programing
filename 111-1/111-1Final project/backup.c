@@ -999,32 +999,32 @@ void clean_buffer(){
 }
 void booster_gain_record( int *booster_slot,int *booster_owned,int *booster_have,int *booster_record,int type){
     
-    if(*booster_have<*booster_slot){
+    if(*booster_have<*booster_slot){//if the booster nums less than slot
         booster_record[*booster_have] = type;
         (*booster_have)++;
     }
     else{
         printf("\nDue to slot space, automatically discard %d and get %d (0=speed 1=price 2=area)\n", booster_record[0], type);
-        booster_owned[booster_record[0]]--;
+        booster_owned[booster_record[0]]--;//minus the first record booster from own
         for (int i = 0; i < *booster_slot;i++){
-        booster_record[i] = booster_record[i + 1];
+        booster_record[i] = booster_record[i + 1];//move each sequence history booster forward one block,which means the first record are disposed
         }
-        booster_record[(*booster_slot) - 1] = type;
+        booster_record[(*booster_slot) - 1] = type;//the new booster record at last place in booster_record
         
     }
-    booster_owned[type]++;
+    booster_owned[type]++;//no matter what should add the new booster
 
 }
 
 int booster_decrease_record( int *booster_slot,int *booster_owned, int *booster_have,int *booster_record,int type){
     int temp=-1;
 
-    if(booster_owned[type]==0){
+    if(booster_owned[type]==0){//determine whether player own the booster
         return 0;
     }
 
 
-    for (int i = 0; i < *booster_slot;i++){
+    for (int i = 0; i < *booster_slot;i++){//detect from old to new,determining the using booster at where in secquence and record it place to temp
         if(booster_record[i]==type){
             temp = i;
         }
@@ -1033,7 +1033,7 @@ int booster_decrease_record( int *booster_slot,int *booster_owned, int *booster_
 
 
     for (int k = temp; k < *booster_slot;k++){
-        booster_record[k] = booster_record[k + 1];
+        booster_record[k] = booster_record[k + 1];// move each sequence history booster forward one block means get rid of the sequence num which previous recording
     }
     (*booster_have)--;
     booster_owned[type]--;
