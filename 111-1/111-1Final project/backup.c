@@ -16,16 +16,16 @@
 #define enemy 3 //enemy plane
 #define destroy 4 //plane destroyed
 
-//function for the part of selling hot dog 
-void selling_hotdog(int *money, int *price,int *start, int *booster_owned);
-void lottery(int *money, int *price, int *booster_slot, int *booster_owned);
+//function for the part of selling hot dog (main part)
+void selling_hotdog(int *money, int *price,int *start,int *booster_slot, int *booster_owned, int *booster_have, int *booster_record);
+void lottery(int *money, int *price, int *booster_slot, int *booster_owned, int *booster_have, int *booster_record);
 
 //function for the map system
-void map_control(int *money,int *booster_owned);
-void map_print(int i, int j,int *b,int *money,int *booster_owned);
+void map_control(int *money,int *booster_owned,int *booster_record,int *booster_slot,int *booster_have);
+void map_print(int i, int j,int *b,int *money,int *booster_owned,int *booster_record,int *booster_slot,int *booster_have);
 
 //function for the aircraft game
-void aircraft_main(int *money, int *booster_slot, int *booster_owned,int *day);
+void aircraft_main(int *money, int *booster_slot, int *booster_owned,int *day,int *booster_record, int *booster_have);
 void UpdateInput(int *money, int *booster_slot, int *booster_owned,int canvas[high+2][width+2],int *pos_h,int *pos_w,int *enemynum,
 int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver);
 void UpdateNormal(int *money, int *booster_slot, int *booster_owned,int canvas[high+2][width+2],int *pos_h,int *pos_w,int *enemynum,
@@ -33,59 +33,67 @@ int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver);
 void Show(int *money, int *booster_slot, int *booster_owned,int canvas[high+2][width+2],int *pos_h,int *pos_w,int *enemynum,
 int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver);
 
+
+
 //set the output place
 void gotoxy(int x, int y);
 //function to hide cursor
 void HideCursor();
 //simulate system pause
 void Waiting();
-//Becaue the buffer from the aircrat game (using kbhit()), we need to clean buffer
+//Becaue the buffer from the aircrat game (using kbhit()), need to clean buffer
 void clean_buffer();
-
+//the function for slot limit
+void booster_gain_record(int *booster_slot, int *booster_owned, int *booster_have, int *booster_record, int type);
+int booster_decrease_record(int *booster_slot, int *booster_owned, int *booster_have, int *booster_record, int type);
 
 int main(){
-    system("C:\\Users\\zxc12\\Desktop\\CCU.png");//output image
-    int money = 100, price = 30, day = 1; // set the variable day to increase difficulty
-    int booster_owned[3] = {0, 0, 0};     // 0 speed 1 price 2 area
-    int start = 1;
+
+    int money = 1000000, price = 30, day = 1; // set the variable day to increase difficulty
     time_t t;
     srand(time(&t));                        // set seed
-    int booster_slot = ((rand() % 11) + 5); // create random slot space
+    int booster_slot = 3 ; // create random slot space
+    int booster_owned[3] = {0, 0, 0},booster_record[booster_slot],booster_have=0;    
+    int start = 1;
 
+ 
+
+    
+    system("C:\\Users\\zxc12\\Desktop\\CCU.png");//output image
     printf("You have %d slot for booster\n", booster_slot);
+    
     while (start == 1)
     {
+        selling_hotdog(&money, &price,&start,&booster_slot,booster_owned,&booster_have,booster_record);
+        if(start==2)break;
+        lottery(&money, &price,&booster_slot,booster_owned,&booster_have,booster_record);
+        aircraft_main(&money,&booster_slot, booster_owned,&day,booster_record,&booster_have);  
+    }
 
-    selling_hotdog(&money, &price,&start, booster_owned);
-    if(start==2)break;
-    lottery(&money, &price,&booster_slot, booster_owned);
-    aircraft_main(&money,&booster_slot, booster_owned,&day);  
 }
 
-}
 
 
 
 
+void selling_hotdog(int *money, int *price,int *start,int *booster_slot, int *booster_owned, int *booster_have, int *booster_record){
+
+    int speed = 15;//default making hot dog speed
+    int booster_switch=0;//using to turn on or off the booster
+    int area = 1;
+    int activity[5]={0};//using to record user input area activity
+    int game_time = 180;
+    int number_of_hotdog = 0;
+    int result[5] = {0};//using to each area result
+    int speedcost = 50, tastecost = 100;
+    int hotdog_make[6] = {0};//store each area hot dog make
+    int money_make[6] = {0};//store each area money make
+    int earn = 0,total_earn=0;
+    int check_selection=0;//using when check each area result
+    int booster[3] = {0, 0, 0};//to store the specify booster turn on or not
 
 
-void selling_hotdog(int *money, int *price,int *start, int *booster_owned){
-int speed = 15;//default making hot dog speed
-int booster_switch=0;//using to turn on or off the booster
-int area = 1;
-int activity[5]={0};//using to 
-int game_time = 180;
-int number_of_hotdog = 0;
-int result[5] = {0};
-int speedcost = 50, tastecost = 100;
-int hotdog_make[6] = {0};
-int money_make[6] = {0};
-int earn = 0,total_earn=0;
-int check_selection=0;
-int booster[3] = {0, 0, 0};
-
-
-printf("Welcome, young boss!\n");
+    printf("Welcome, young boss!\n");
 
 
     booster_switch = 0;
@@ -107,7 +115,7 @@ printf("Welcome, young boss!\n");
         earn = 0, total_earn = 0;
         // choose booster
         printf("Open/Close boosters:\n");
-        if (booster[0] == 1)
+        if (booster[0] == 1)//booster[type]==open or not
             printf("  [1] Speed booster (now open)\n"); // if booster open
         if (booster[0] == 0)
             printf("  [1] Speed booster (now close)\n");
@@ -128,15 +136,15 @@ printf("Welcome, young boss!\n");
             printf("Invalid input!!!!\n");
         if (booster_switch == 1)
         {
-            if (booster[0] == 0)
+            if (booster[0] == 0)//if close
             {
-                booster[0] = 1;
-                booster_owned[0]--;
+                booster[0] = 1;//turn on it
+                
             }
-            else
+            else//if open
             {
-                booster[0] = 0;
-                booster_owned[0]++;
+                booster[0] = 0;//turn off it
+
             }
         }
         if (booster_switch == 2)
@@ -144,12 +152,11 @@ printf("Welcome, young boss!\n");
             if (booster[1] == 0)
             {
                 booster[1] = 1;
-                booster_owned[1]--;
+                
             }
             else
             {
                 booster[1] = 0;
-                booster_owned[1]++;
             }
         }
         if (booster_switch == 3)
@@ -157,34 +164,42 @@ printf("Welcome, young boss!\n");
             if (booster[2] == 0)
             {
                 booster[2] = 1;
-                booster_owned[2]--;
+               
             }
             else
             {
                 booster[2] = 0;
-                booster_owned[0]++;
             }
         }
 
-    
+        
     }
 
- if(booster_owned[0]==-1){
-     booster[0] = 0;
-     booster_owned[0]++;
- }
- if(booster_owned[1]==-1){
-     booster[1] = 0;
-     booster_owned[1]++;
- }
- if(booster_owned[2]==-1){
-     booster[2] = 0;
-     booster_owned[2]++;
- }
+    if(booster[0]==1){
+        
+        if(booster_owned[0]==0){
+            booster[0] = 0;
+        }
+        booster_decrease_record(booster_slot,booster_owned, booster_have,booster_record,0);
+    }
+    if(booster[1]==1){
+        
+        if(booster_owned[1]==0){
+            booster[1] = 0;
+        }
+        booster_decrease_record(booster_slot,booster_owned, booster_have,booster_record,1);
+    }
+    if(booster[2]==1){
+        
+        if(booster_owned[2]==0){
+            booster[2] = 0;
+        }
+        booster_decrease_record(booster_slot,booster_owned, booster_have,booster_record,2);
+    }
 
 
  while(0<=area&&area<=3){
-    // choose action            
+     // choose action            
      printf("Actions you can take for each area:\n");
      printf("  [1] Sell the hotdogs\n");
      printf("  [2] Improve your cooking speed\n");
@@ -192,202 +207,200 @@ printf("Welcome, young boss!\n");
      printf("  [3] Improve your hotdog flavor\n");
      printf("      (- $%d, - $%d, - $%d, - $%d for next four upgrades)\n", tastecost,tastecost*2 ,tastecost*4 ,tastecost*8 );
      printf("Enter the number(s): ");
-      for (int i = 0; i < 4; i++){//0:area1....
-                    scanf("%d", &activity[i]);
-                }
+     for (int i = 0; i < 4; i++){//0:area1....
+            scanf("%d", &activity[i]);
+        }
       
-      for (int i = 0; i < 4; i++){
-                    while ((activity[i]>3)||(activity[i]<1)){
-                    printf("Invalid input!!!!\n");
-                    printf("Actions you can take at Area %d:\n",i+1 );
-                    printf("  [1] Sell the hotdogs\n");
-                    printf("  [2] Improve your cooking speed\n");
-                    printf("  [3] Improve your hotdog flavor\n");
-                    printf("Enter the number(s): ");
-                    scanf("%d", &activity[i]);
-                    }
+     for (int i = 0; i < 4; i++){
+            while ((activity[i]>3)||(activity[i]<1)){
+                printf("Invalid input!!!!\n");
+                printf("Actions you can take at Area %d:\n",i+1 );
+                printf("  [1] Sell the hotdogs\n");
+                printf("  [2] Improve your cooking speed\n");
+                printf("  [3] Improve your hotdog flavor\n");
+                printf("Enter the number(s): ");
+                scanf("%d", &activity[i]);
+            }
                     
                     
-                }
-      for (area=1; area<=4 ;area++){
-                    number_of_hotdog = game_time / speed;
-                    earn = number_of_hotdog * *price;
+        }
+     for (area=1; area<=4 ;area++){
+            number_of_hotdog = game_time / speed;
+            earn = number_of_hotdog * *price;
 
-                    if(booster[0]==1){
-                        number_of_hotdog = number_of_hotdog * 2;
-                    }
-                    else if(booster[0]==0){
-                        number_of_hotdog = game_time / speed;
-                    }
-                     if(booster[1]==1){
-                        earn = number_of_hotdog * *price*2;
-                    }
+            if(booster[0]==1){
+                number_of_hotdog = number_of_hotdog * 2;//if booster speed turn on double it
+            }
+                    
+            else if(booster[0]==0){
+                number_of_hotdog = game_time / speed;//else
+            }
+                    
+            if(booster[1]==1){
+                 earn = number_of_hotdog * *price*2;//if booster price turn on double it
+            }
                       
-                    else if(booster[1]==0){  earn = number_of_hotdog * *price;
-                    }
+            else if(booster[1]==0){  
+                earn = number_of_hotdog * *price;//else
+            }
                     
-                    if((activity[area-1]==2&&*money<speedcost)||(activity[area-1]==3&&*money<tastecost))
-                    result[area] = 1;
-                    else if((activity[area-1]==2&&speed==1))
-                    result[area] = 2;
-                    else if (activity[area-1]==1)
-                    result[area] = 3;
-                    else if (activity[area-1]==2){
-                    result[area] = 4;
-                    speed--;
-                    *money -= speedcost;
-                    speedcost *= 2;
-                    }
-                    else if (activity[area-1]==3){
-                    result[area] = 5;
-                    *price += 10;
-                    *money -= tastecost;
-                    tastecost *= 2;
-                    }
+            //determine the result from player choosing activity and each situation        
+            if((activity[area-1]==2&&*money<speedcost)||(activity[area-1]==3&&*money<tastecost))
+                result[area] = 1;
+            else if((activity[area-1]==2&&speed==1))
+                result[area] = 2;
+            else if (activity[area-1]==1)
+                result[area] = 3;
+            else if (activity[area-1]==2){
+                result[area] = 4;
+                speed--;
+                *money -= speedcost;
+                speedcost *= 2;
+            }
+            else if (activity[area-1]==3){
+                result[area] = 5;
+                *price += 10;
+                *money -= tastecost;
+                tastecost *= 2;
+            }
 
-                    if(result[area]==1||result[area]==2||result[area]==3){
-                    hotdog_make[area] = number_of_hotdog;
-                    money_make[area] = earn;
-                    total_earn += earn;
-                    }
+            if(result[area]==1||result[area]==2||result[area]==3){
+                hotdog_make[area] = number_of_hotdog;
+                money_make[area] = earn;
+                total_earn += earn;
+            }
 
                     
 
                     
         
-         }
+        }
     }                    
-                  
-                    if(booster[2]==1){
-                    number_of_hotdog = game_time / speed;
-                    earn = number_of_hotdog * *price;
-                    if(booster[0]==1){
-                        number_of_hotdog = number_of_hotdog * 2;
-                    }
-                    else if(booster[0]==0){
-                        number_of_hotdog = game_time / speed;
-                    }
-                     if(booster[1]==1){
-                        earn = number_of_hotdog * *price*2;
-                    }
+    
+    //the setting when extra area turn on
+    if(booster[2]==1){
+        number_of_hotdog = game_time / speed;
+        earn = number_of_hotdog * *price;
+        if(booster[0]==1){
+            number_of_hotdog = number_of_hotdog * 2;
+        }
+        else if(booster[0]==0){
+            number_of_hotdog = game_time / speed;
+        }
+        if(booster[1]==1){
+            earn = number_of_hotdog * *price*2;
+        }
                       
-                    else if(booster[1]==0){  earn = number_of_hotdog * *price;
-                    }
+        else if(booster[1]==0){  
+            earn = number_of_hotdog * *price;
+        }
                  
-                    hotdog_make[5] = number_of_hotdog;
-                    money_make[5] = earn;
-                    total_earn += earn;
-                    *money += earn;
-                    }
-                    printf("Well done, you earn $%d today.\n", total_earn);
-                    *money += total_earn;
+        hotdog_make[5] = number_of_hotdog;
+        money_make[5] = earn;
+        total_earn += earn;
+        
+    }
+
+    printf("Well done, you earn $%d today.\n", total_earn);
+    *money += total_earn;
                     
-                    while(check_selection!=(5+booster[2])){
+    while(check_selection!=(5+booster[2])){//area open 6 out,not open 5 out
                       
                         
-                        printf("Which result of the area you want to check?\n");
-                        printf("  [1] Area 1\n");
-                        printf("  [2] Area 2\n");
-                        printf("  [3] Area 3\n");
-                        printf("  [4] Area 4\n");
-                        if (booster[2]==1){
-                            printf("  [5] Area 5\n");
-                    }   // if booster open
+        printf("Which result of the area you want to check?\n");
+        printf("  [1] Area 1\n");
+        printf("  [2] Area 2\n");
+        printf("  [3] Area 3\n");
+        printf("  [4] Area 4\n");
+
+        if (booster[2]==1){
+            printf("  [5] Area 5\n");
+        }   // if booster open
                         
-                        if(booster[2]!=1){
-                        printf("  [5] Done\n");
-                        }
+        if(booster[2]!=1){
+            printf("  [5] Done\n");
+        }
                         
-                        if(booster[2]==1){
-                        printf("  [6] Done\n");
-                    } // if booster open
-                        
-                        
-                        printf("Enter the number(s): ");
-                        scanf("%d", &check_selection);
-                     if(check_selection>6||check_selection<1){
-                        printf("Invalid input!!!!\n");
-                        continue;
-                     }   
-                     if(result[check_selection]==1){
-                        map_control(&*money, booster_owned);
-                        printf("Can't you tell how poor you are?\n");
-				        printf("Go vending your hotdogs instead of thinking about self-improvement!\n");
+        if(booster[2]==1){
+            printf("  [6] Done\n");
+        } // if booster open
                         
                         
-                     }    
-                     else if(result[check_selection]==2){
-                        map_control(&*money, booster_owned);
-                        printf("Do you want to travel through time?\n");
-			            printf("GO WORK!!\n");
+        printf("Enter the number(s): ");
+        scanf("%d", &check_selection);
+        if(check_selection>6||check_selection<1){
+            printf("Invalid input!!!!\n");
+            continue;
+        }   
+        if(result[check_selection]==1){
+            map_control(&*money, booster_owned,booster_record,booster_slot,booster_have);
+            printf("Can't you tell how poor you are?\n");
+			printf("Go vending your hotdogs instead of thinking about self-improvement!\n");
+        }    
+                     
+        else if(result[check_selection]==2){
+            map_control(&*money, booster_owned,booster_record,booster_slot,booster_have);
+            printf("Do you want to travel through time?\n");
+			printf("GO WORK!!\n");
+        }
+        else if (result[check_selection] == 4){
+            map_control(&*money, booster_owned,booster_record,booster_slot,booster_have);
+            printf("You glimpse the secret of wind.\n");
+			printf("Your hands can move faster now.\n");
 
-                        
-                     }
-                      else if (result[check_selection] == 4){
-                        map_control(&*money, booster_owned);
-                        printf("You glimpse the secret of wind.\n");
-				        printf("Your hands can move faster now.\n");
+        }
+        else if (result[check_selection] == 5){
+            map_control(&*money, booster_owned,booster_record,booster_slot,booster_have);
+            printf("You feel the soul of the ingredients.\n");
+            printf("Your hotdogs are more appetizing now.\n");
+        }
+        if(result[check_selection]<=3){
+            if(check_selection==5&&booster[2]==0)
+                break;
+            if(check_selection==6&&booster[2]==1)
+                break;
+            map_control(&*money, booster_owned,booster_record,booster_slot,booster_have);
+            printf("You make %d hotdogs here!\n", hotdog_make[check_selection]);
+			printf("You earn $%d!\n", money_make[check_selection]);
 
-                     }
-                     else if (result[check_selection] == 5){
-                        map_control(&*money, booster_owned);
-                        printf("You feel the soul of the ingredients.\n");
-				        printf("Your hotdogs are more appetizing now.\n");
-
-                        }
-                     if(result[check_selection]<=3){
-                        if(check_selection==5&&booster[2]==0)
-                            break;
-                        if(check_selection==6&&booster[2]==1)
-                            break;
-                        map_control(&*money, booster_owned);
-                        printf("You make %d hotdogs here!\n", hotdog_make[check_selection]);
-				        printf("You earn $%d!\n", money_make[check_selection]);
-
-                     }
-                     }
-
-
-  printf("Do you want to continue or exit?\n");
-  printf("  [1] Continue\n");
-  printf("  [2] Exit\n");
-  printf("Enter the number(s): ");
-  scanf("%d",start);
-  if(*start==2){
-    printf("We will miss you. Bye!\n");
-    system("pause");
-  }
+        }
+    }
 
 
+    printf("Do you want to continue or exit?\n");
+    printf("  [1] Continue\n");
+    printf("  [2] Exit\n");
+    printf("Enter the number(s): ");
+    scanf("%d",start);
+    if(*start==2){
+        printf("We will miss you. Bye!\n");
 
-
+    }
 
 
 }
 
 
-void lottery(int *money, int *price,int *booster_slot, int *booster_owned){
-int booster_record[*booster_slot];
+void lottery(int *money, int *price, int *booster_slot, int *booster_owned, int *booster_have, int *booster_record){
 
-int selection;
-int booster_have = 0, i = 0;
+    int selection;
 
-int gamelotterysize =1;
-int gamelotteryshow[100][100]={0};
-int gamelotterydigit[100][100]={0};
-int gamelotteryreal[100][100]={0};
+    int gamelotterysize =1;//the initialize size is 3
+    int gamelotteryshow[100][100]={0};//for showing
+    int gamelotterydigit[100][100]={0};//for printing space
+    int gamelotteryreal[100][100]={0};//real content(prize)
 
 
-int amountlotteryfree=0,amountlotterycost=500;
-int amountlotteryremain=0;
+    int amountlotteryfree=0,amountlotterycost=500;
+    int amountlotteryremain=0;//to record how many squares remain
 
-int flag;
+    int flag;
 
-int tmpprizetype;
-int tmpmaxdigitcnt,tmpnowdigitcnt;
-int tmpmaxdigit,tmpnowdigit;
-int selectrow,selectcolumn;
-time_t t;
+    int tmpprizetype;
+    int tmpmaxdigitcnt,tmpnowdigitcnt;
+    int tmpmaxdigit,tmpnowdigit;
+    int selectrow,selectcolumn;
+    time_t t;
     
 
     printf("You get one free choice.\n");
@@ -405,7 +418,7 @@ time_t t;
         //initialize
         if(amountlotteryremain==0){
             amountlotterycost=500;
-            gamelotterysize+=2;
+            gamelotterysize+=2;//if no square then refresh and size plustwo
             amountlotteryremain=gamelotterysize*gamelotterysize;
             for(int i=0;i<gamelotterysize;i++){
                 for(int j=0;j<gamelotterysize;j++){
@@ -413,13 +426,13 @@ time_t t;
                     tmpnowdigit=gamelotteryshow[i][j];
                     tmpprizetype=0;
                     tmpnowdigitcnt=0;
-                while(tmpnowdigit){
+                    while(tmpnowdigit){
                     tmpprizetype=tmpprizetype*16+tmpnowdigit%10;
                     tmpnowdigit/=10;
                     tmpnowdigitcnt++;
-                }
-                gamelotteryreal[i][j]=((rand() % 9)+1);
-                gamelotterydigit[i][j]=tmpnowdigitcnt;
+                    }
+                    gamelotteryreal[i][j]=((rand() % 9)+1);//give square random prize 1~9
+                    gamelotterydigit[i][j]=tmpnowdigitcnt;
                 }
 
             }
@@ -427,7 +440,7 @@ time_t t;
    
     
 
-     //準備印樂透
+     //prepare print square and calculate the largest num digit
      tmpmaxdigit = gamelotterysize * gamelotterysize;
      tmpmaxdigitcnt = 0;
     
@@ -435,9 +448,9 @@ time_t t;
         tmpmaxdigit /= 10;
         tmpmaxdigitcnt++;
      }
-     //印樂透
-
-     for (int i = 0; i < gamelotterysize;i++){
+     
+     //print suare
+     for (int i = 0; i < gamelotterysize;i++){//square without bottom
         printf("+");
         for (int j = 0; j < gamelotterysize;j++){
             for (int k = 0; k < tmpmaxdigitcnt + 2;k++)printf("-");
@@ -447,7 +460,7 @@ time_t t;
 
         printf("\n|");
 
-        for (int j = 0; j < gamelotterysize;j++){
+        for (int j = 0; j < gamelotterysize;j++){//the line of num
          if(gamelotteryreal[i][j]==-1){
                 for (int k = 0; k < tmpmaxdigitcnt - 1;k++){printf(" ");}
                 printf(" x |");
@@ -462,7 +475,7 @@ time_t t;
 
      }
     
-     printf("+");
+     printf("+");//bottom part
      for (int j = 0; j < gamelotterysize;j++){
         for (int k = 0; k < tmpmaxdigitcnt + 2;k++)printf("-");
             printf("+");
@@ -470,8 +483,7 @@ time_t t;
 
      printf("\n");
 
-     //choose lottery
-
+     //choose lottery and each situation happen
      printf("You can choose\n");
      printf("  [number on cell] to open (- %d)\n", amountlotteryfree == 0 ? amountlotterycost : 0);
      printf("  [0] to continue the game\n");
@@ -500,7 +512,7 @@ time_t t;
      }
     
 
-     //run lottery
+     //run lottery and reveal prize
 
      while(flag){
         int lotterycontent = gamelotteryreal[selectrow][selectcolumn];
@@ -517,29 +529,8 @@ time_t t;
         }
         else if(lotterycontent>=7){
             printf("You get a booster!!\n");
-            
-            if( booster_have<*booster_slot){
+            booster_gain_record(booster_slot, booster_owned, booster_have, booster_record, lotterycontent - 7);
 
-            booster_have++;
-            booster_owned[lotterycontent - 7]++;
-            booster_record[i] = lotterycontent - 7;
-            i++;
-            printf("You owned speed %d price %d area %d\n",booster_owned[0],booster_owned[1],booster_owned[2]);
-            }
-
-    
-            else {
-            booster_owned[booster_record[0]]--;
-            booster_owned[lotterycontent - 7]++;
-            printf("Due to slot space, automatically discard %d and get %d (0=speed 1=price 2=area)\n", booster_record[0], lotterycontent - 7);
-
-            for (int k = 0; k < *booster_slot;k++){
-                booster_record[k] = booster_record[k + 1];
-            }
-            booster_record[*booster_slot - 1] = lotterycontent - 7;
-            
-            printf("You owned speed %d price %d area %d\n",booster_owned[0],booster_owned[1],booster_owned[2]);
-            }
         }
         else if(lotterycontent>=3&&lotterycontent<=6){
             if(lotterycontent==3)selectrow = (selectrow - 1 + gamelotterysize) % gamelotterysize;
@@ -563,7 +554,7 @@ time_t t;
 
 }
 
-void map_control(int *money,int *booster_owned){
+void map_control(int *money,int *booster_owned,int *booster_record,int *booster_slot,int *booster_have ){
     int start = 1;
     int i=0;
     int x = 0, y = 0;
@@ -583,7 +574,7 @@ void map_control(int *money,int *booster_owned){
     
     } while ((b[0]==b[1]==b[2]==b[3]));
 
-        map_print(y, x, b,money,booster_owned);
+        map_print(y, x, b,money,booster_owned,booster_record,booster_slot,booster_have);
     
 
     while(start!=0){
@@ -596,7 +587,7 @@ void map_control(int *money,int *booster_owned){
     		y=y-1;//up
             if(y!=-1){
                 system("cls");
-                map_print(y,x,b,money,booster_owned);
+                map_print(y,x,b,money,booster_owned,booster_record,booster_slot,booster_have);
                 *money -= 25;
             }
 
@@ -613,7 +604,7 @@ void map_control(int *money,int *booster_owned){
 
             if(y!=8){
                 system("cls");
-                map_print(y,x,b,money,booster_owned);
+                map_print(y,x,b,money,booster_owned,booster_record,booster_slot,booster_have);
                 *money -= 25;
             }
 
@@ -629,7 +620,7 @@ void map_control(int *money,int *booster_owned){
 
             if(x!=-1){
                 system("cls");
-                map_print(y,x,b,money,booster_owned);
+                map_print(y,x,b,money,booster_owned,booster_record,booster_slot,booster_have);
                 *money -= 25;
             }
 
@@ -645,7 +636,7 @@ void map_control(int *money,int *booster_owned){
 
             if(x!=8){
                 system("cls");
-                map_print(y,x,b,money,booster_owned);
+                map_print(y,x,b,money,booster_owned,booster_record,booster_slot,booster_have);
                 *money -= 25;
             }
 
@@ -666,7 +657,7 @@ void map_control(int *money,int *booster_owned){
     }
 }
 
-void map_print(int i, int j,int *b,int *money,int *booster_owned){
+void map_print(int i, int j,int *b,int *money,int *booster_owned,int *booster_record,int *booster_slot,int *booster_have){
     system("cls");
     HideCursor(); 
     gotoxy(1,1); 
@@ -719,19 +710,19 @@ void map_print(int i, int j,int *b,int *money,int *booster_owned){
 
      if((b[2]==i)&&(b[3]==j)){
         printf("Congratulation, you earn a booster\n");
-        booster_owned[rand() % 3] += 1;
+        booster_gain_record(booster_slot, booster_owned, booster_have, booster_record, rand() % 3);
         printf("You owned speed %d price %d area %d\n",booster_owned[0],booster_owned[1],booster_owned[2]);
         b[2] = b[3] = -1; //let it outside the board
     }
     
 }
 
-void aircraft_main(int *money, int *booster_slot, int *booster_owned,int *day){
+void aircraft_main(int *money, int *booster_slot, int *booster_owned,int *day,int *booster_record,int *booster_have){
     
     system("cls");
     printf("Warning!!!!!on your way home,you have been besieged by space hot dog pirates.\n");
     printf("Try to elminate (%d) hot dog pirates then you can escape and home back to CCU\n\n",(*day)*10);
-    printf("Please notice:\nOne laser bullet cost $30\nElminate one enemy plane can get $100\nThe difficulty will be harder when the day passes by\n"
+    printf("Please notice:\nOne laser bullet cost $5\nElminate one enemy plane can get $100\nThe difficulty will be harder when the day passes by\n"
     "IF YOU ARE ELIMINATED,YOU WILL LOOSE ALL PROPERTIES\n\n");
     Waiting();
     system("cls");
@@ -791,13 +782,15 @@ if (IsOver == 0)
     *money = 0;
     for (int i = 0; i < 3; i++)
     {
-            booster_owned[i] = 0;
+        booster_owned[i] = 0;
+
     }
+    *booster_have = 0;
     }
     else if ((score >= ((*day) * 10)))
     {
-            printf("\nCongratulation!You break through the enemy barricade\n");
-            printf("You earned %d from the hot dog pirate\n", (*day) * 100 * 10);
+        printf("\nCongratulation!You break through the enemy barricade\n");
+        printf("You earned %d from the hot dog pirate\n", (*day) * 100 * 10);
     }
 
     clean_buffer();
@@ -872,7 +865,7 @@ int *interval ,int *itv_move, int *itv_new ,int *score, int *IsOver){
     }
     if(key_attack<0){ //when space become false
         if(*pos_h!=1){canvas[*pos_h-1][*pos_w]=bullet;}//if the the place in fornt of the plane is not the border then print the bullet in front of plane
-        (*money) -= 20;
+        (*money) -= 5;
         
         }
         
@@ -1004,4 +997,46 @@ void clean_buffer(){
     }
 
 }
+void booster_gain_record( int *booster_slot,int *booster_owned,int *booster_have,int *booster_record,int type){
+    
+    if(*booster_have<*booster_slot){
+        booster_record[*booster_have] = type;
+        (*booster_have)++;
+    }
+    else{
+        printf("\nDue to slot space, automatically discard %d and get %d (0=speed 1=price 2=area)\n", booster_record[0], type);
+        booster_owned[booster_record[0]]--;
+        for (int i = 0; i < *booster_slot;i++){
+        booster_record[i] = booster_record[i + 1];
+        }
+        booster_record[(*booster_slot) - 1] = type;
+        
+    }
+    booster_owned[type]++;
 
+}
+
+int booster_decrease_record( int *booster_slot,int *booster_owned, int *booster_have,int *booster_record,int type){
+    int temp=-1;
+
+    if(booster_owned[type]==0){
+        return 0;
+    }
+
+
+    for (int i = 0; i < *booster_slot;i++){
+        if(booster_record[i]==type){
+            temp = i;
+        }
+    }
+
+
+
+    for (int k = temp; k < *booster_slot;k++){
+        booster_record[k] = booster_record[k + 1];
+    }
+    (*booster_have)--;
+    booster_owned[type]--;
+
+    return 0;
+}
