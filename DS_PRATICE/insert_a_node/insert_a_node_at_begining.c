@@ -1,11 +1,15 @@
 #include <stdio.h>
+#include <stdlib.h>
+
+//https://www.youtube.com/watch?v=cAZ8CyDY56s&t=429s
+
 typedef struct node{
     int data;
     struct node *next;
-}node;
+}node;//define node
 
 node *insert(node *head, int x){
-    node *temp = (node *)malloc(sizeof(node));
+    node *temp =  (node *)malloc(sizeof(node));//malloce a memory for temp
     temp->data = x;
     temp->next = head;
     head = temp;
@@ -21,7 +25,6 @@ void print(node *head){
 };
 
 int main(){
-
     int num,input;
     node *head = NULL;
     printf("Plz input how many nums to input\n");
