@@ -17,7 +17,7 @@ node *insert(node *head, int data, int position){
         head = temp1;
         return head;
     }
-    node *temp2 = head;//set a new pointer to modify the data in the head
+    node *temp2 = head;//due to not to destroy head pointer ,set a new pointer to modify the data
     for (int i = 0; i < position - 2;i++){
         temp2 = temp2->next;
     }
