@@ -14,7 +14,7 @@ node *insert(node *head,int data){
     temp->next = head;
     head = temp;
     return head;
-};
+}
 
 node *reverse(node *head){
     node *prev = NULL;
@@ -29,7 +29,7 @@ node *reverse(node *head){
     }
     head = prev;
     return head;
-};
+}
 
 void print(node *head){
     
@@ -38,7 +38,7 @@ void print(node *head){
         head = head->next;
     }
 
-};
+}
 
 int main(){
     int num, data;
