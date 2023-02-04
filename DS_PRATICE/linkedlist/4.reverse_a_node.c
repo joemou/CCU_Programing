@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//https://www.youtube.com/watch?v=sYcOK51hl-A&list=PL2_aWCzGMAwI3W_JlcBbtYTwiQSsOTa6P&index=9
+
 typedef struct node{
     int data;
     struct node *next;
