@@ -206,7 +206,6 @@ while(0<=area&&area<=3){
                     hotdog_make[5] = number_of_hotdog;
                     money_make[5] = earn;
                     total_earn += earn;
-                    money += earn;
                     }
                     printf("Well done, you earn $%d today.\n", total_earn);
                     money += total_earn;

@@ -1,12 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
+#include <windows.h>
 #include <time.h>
 
+//function for the part of selling hot dog 
 void selling_hotdog(int *money, int *price,int *start, int *booster_owned);
 void lottery(int *money, int *price, int *booster_slot, int *booster_owned);
 
+//function for the map systen
 void map_control(int *money,int *booster_owned);
 void map_print(int i, int j,int *b,int *money,int *booster_owned);
+
+//function for the aircraft game
+
+
+//function for map and aircraft game
+void gotoxy(int x,int y){ //set the output place
+COORD pos;
+pos.X=x-1;
+pos.Y=y-1;
+SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
+};
+void HideCursor(){ //hide cursor
+CONSOLE_CURSOR_INFO cursor;
+cursor.bVisible = FALSE;
+cursor.dwSize = sizeof(cursor);
+HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+SetConsoleCursorInfo(handle,&cursor);
+};
 
 int main(){
 
@@ -267,36 +289,40 @@ printf("Welcome, young boss!\n");
                         continue;
                      }   
                      if(result[check_selection]==1){
-                        
+                        map_control(&*money, booster_owned);
                         printf("Can't you tell how poor you are?\n");
 				        printf("Go vending your hotdogs instead of thinking about self-improvement!\n");
-                        map_control(&*money, booster_owned);
+                        
                         
                      }    
                      else if(result[check_selection]==2){
+                        map_control(&*money, booster_owned);
                         printf("Do you want to travel through time?\n");
 			            printf("GO WORK!!\n");
-                        map_control(&*money, booster_owned);
+
                         
                      }
                       else if (result[check_selection] == 4){
+                        map_control(&*money, booster_owned);
                         printf("You glimpse the secret of wind.\n");
 				        printf("Your hands can move faster now.\n");
-                        map_control(&*money, booster_owned);
+
                      }
                      else if (result[check_selection] == 5){
+                        map_control(&*money, booster_owned);
                         printf("You feel the soul of the ingredients.\n");
 				        printf("Your hotdogs are more appetizing now.\n");
-                        map_control(&*money, booster_owned);
+
                         }
                      if(result[check_selection]<=3){
                         if(check_selection==5&&booster[2]==0)
                             break;
                         if(check_selection==6&&booster[2]==1)
                             break;
+                        map_control(&*money, booster_owned);
                         printf("You make %d hotdogs here!\n", hotdog_make[check_selection]);
 				        printf("You earn $%d!\n", money_make[check_selection]);
-                        map_control(&*money, booster_owned);
+
                      }
                      }
 
@@ -308,6 +334,7 @@ printf("Welcome, young boss!\n");
   scanf("%d",start);
   if(*start==2){
     printf("We will miss you. Bye!\n");
+    system("pause");
   }
 
 
@@ -528,7 +555,7 @@ void map_control(int *money,int *booster_owned){
         map_print(y, x, b,money,booster_owned);
 
     while(start!=0){
-     printf("\nPlease input (1: up, 2: down, 3: left, and 4: right 5: finished) to indicate move action.\n25$ for each action.\nENTER:");
+     printf("\nYou Enter the mysterious Maze.\nPlease input (1: up, 2: down, 3: left, and 4: right 5: finished) to indicate move action.\n25$ for each action.\nENTER:");
 
      scanf("%d", &i);
 
@@ -536,6 +563,7 @@ void map_control(int *money,int *booster_owned){
 
     		y=y-1;//up
             if(y!=-1){
+                system("cls");
                 map_print(y,x,b,money,booster_owned);
                 *money -= 25;
             }
@@ -543,6 +571,7 @@ void map_control(int *money,int *booster_owned){
             else{ 
                 printf("\n\nyou touch the board\nplease choose again\n");
                 y = y + 1;
+                
             }
             
 
@@ -551,6 +580,7 @@ void map_control(int *money,int *booster_owned){
 			y=y+1;//down
 
             if(y!=8){
+                system("cls");
                 map_print(y,x,b,money,booster_owned);
                 *money -= 25;
             }
@@ -558,6 +588,7 @@ void map_control(int *money,int *booster_owned){
             else{ 
                 printf("\n\nyou touch the board\nplease choose again\n");
                 y = y -1;
+                
             }
 		}
 	 else if(i==3){
@@ -565,6 +596,7 @@ void map_control(int *money,int *booster_owned){
 			x=x-1;//left
 
             if(x!=-1){
+                system("cls");
                 map_print(y,x,b,money,booster_owned);
                 *money -= 25;
             }
@@ -572,6 +604,7 @@ void map_control(int *money,int *booster_owned){
             else{ 
                 printf("\n\nyou touch the board\nplease choose again\n");
                 x = x + 1;
+                
             }
 		}
 	 else if(i==4){
@@ -579,6 +612,7 @@ void map_control(int *money,int *booster_owned){
 			x=x+1;//right
 
             if(x!=8){
+                system("cls");
                 map_print(y,x,b,money,booster_owned);
                 *money -= 25;
             }
@@ -586,18 +620,24 @@ void map_control(int *money,int *booster_owned){
             else{ 
                 printf("\n\nyou touch the board\nplease choose again\n");
                 x = x - 1;
+                
             }
 		}
      else if(i==5){
+            system("cls");
             start=0;
+            
      }
+    
 	 
 
     }
 }
 
 void map_print(int i, int j,int *b,int *money,int *booster_owned){
-    
+    system("cls");
+    HideCursor(); //隱藏游標
+    gotoxy(1,1); //回撥游標、重新整理畫面
     int a[9][9];
     int x, y;
     time_t t;
