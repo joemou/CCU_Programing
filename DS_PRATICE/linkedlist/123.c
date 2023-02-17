@@ -3,71 +3,119 @@
 
 typedef struct node{
     int data;
+    struct node *prev;
     struct node *next;
 } node;
 
-void print(node *head){
-    while(head!=NULL){
-        printf("%d", head->data);
-        head = head->next;
-    }
+//malloc new node in heap
+node *getnode(int data){
+    node *newnode = (node *)malloc(sizeof(node));
+    newnode->data = data;
+    newnode->prev = NULL;
+    newnode->next = NULL;
+    return newnode;
 }
 
-node *insert(node* head, int data){
-    node *temp = (node *)malloc(sizeof(node));
-    temp->data = data;
-    temp->next = head;
-    head = temp;
+
+node *insert_begining(node *head,int data){
+    node *newnode = getnode(data);
+    if(head==NULL){
+        head = newnode;
+        return head;
+    }
+    head->prev = newnode;
+    newnode->next = head;
+    head = newnode;
     return head;
 }
 
-node *insert_nth(node*head,int data,int position){
+node *insert_nth(node *head,int data,int position){
     if(position==1){
-        head = insert(head, data);
+        head = insert_begining(head, data);
         return head;
     }
-    node *temp1 = (node *)malloc(sizeof(node));
-    node *temp2 = head;
-    temp1->data = data;
-    temp1->next = NULL;
+    node *newnode = getnode(data);
+    node *temp1 = head;
     for (int i = 0; i < position - 2;i++){
-        temp2 = temp2->next;
+        temp1 = temp1->next;
     }
-    temp1->next = temp2->next;
-    temp2->next = temp1;
+    node *temp2 = temp1->next;
+    
+    //if insert to the tail
+    if(temp2==NULL){
+        newnode->prev = temp1;
+        temp1->next = newnode;
+        return head;
+    }
+
+    newnode->prev = temp1;
+    temp1->next = newnode;
+    temp2->prev = newnode;
+    newnode->next = temp2;
     return head;
 }
 
 node *deletion_nth(node *head,int position){
     if(position==1){
         head = head->next;
+        head->prev = NULL;
         return head;
     }
-    node *temp = head;
+    node *temp1 = head;
     for (int i = 0; i < position - 2;i++){
-        temp = temp->next;
+        temp1 = temp1->next;
     }
-    node *temp2 = temp->next;
-    temp->next = temp2->next;
+    node *temp2 = temp1->next;
+    
+    //if delete the tail
+    if(temp2->next==NULL){
+        temp1->next = NULL;
+        temp2->prev = NULL;
+        return head;
+    }
+
+    temp1->next = temp2->next;
+
+    node *temp3 = temp2;
+    temp2 = temp2->next;
+    temp2->prev = temp3->prev;
+
+    return head;
+}
+node *reverse(node *head){
+    node *temp = head;
+    //head at head
+
+    while(head->next!=NULL){
+        head = head->next;    
+    }
+ 
+
+
+    while(temp->next!=NULL){
+        node *temp2 = temp->next;
+        node *temp3 = temp;
+
+        temp->next = temp2->prev;
+        temp2->prev = temp3->next;
+        temp = temp->prev;
+    }
+
     return head;
 }
 
-node *reverse(node *head){
-    node *now = head;
-    node *prev = NULL;
-    node *next;
-    while(now!=NULL){
-        next = now->next;
-        now->next = prev;
-        prev = now;
-        now = next;
+void print(node* head){
+
+    while (head != NULL){
+        printf(" %d", head->data);
+        head = head->next;
     }
-    head = prev;
-    return head;
 }
+
+
 
 int main(){
-    int action=-1,data,position,num;
+    int action=-1,data,num,position;
     node *head = NULL;
     while(action!=0){
         printf("Plz input the action\n1.insert data\n2.insert data at nth\n3.delete data at nth\n4.reverse data\n0.exit\n");
@@ -79,7 +127,7 @@ int main(){
                 for (int i = 0; i < num;i++){
                     printf("Plz input data %d\n",i+1);
                     scanf("%d", &data);
-                    head = insert(head,data);
+                    head = insert_begining(head,data);
                 }
                 printf("\n");
                 printf("The list is:");
@@ -117,11 +165,11 @@ int main(){
                     printf("u need at least one data\n");
                     break;
                 }
-                head = reverse(head);
                 printf("The list is:");
+                head = reverse(head);
                 print(head);
                 printf("\n\n");
                 break;
-        }
+        }           
     }
 }
