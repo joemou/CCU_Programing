@@ -87,20 +87,22 @@ node *deletion_nth(node *head,int position){
     return head;
 }
 node *reverse(node *head){
-    node *temp = head;
-    //head at head
-    if(temp->prev==NULL){
-        while(temp->next!=NULL){
-            temp = temp->next;
-        }
+    node *first = NULL;
+    node *second;
+
+    second = head;
+    while(second!=NULL){
+        first = second->prev;
+        second->prev = second->next;
+        second->next = first;
+        second = second->prev;
     }
-    //head at tail
-    else if(temp->next==NULL){
-        while(temp->prev!=NULL){
-            temp = temp->prev;
-        }        
+    if(first!=NULL){
+        head = first->prev;
+        return head;
     }
-    head = temp;
+
+    head = second;
     return head;
 }
 

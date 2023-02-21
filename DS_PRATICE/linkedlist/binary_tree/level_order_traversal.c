@@ -50,7 +50,7 @@ void push(node *target,node **front,node **rear){
 }
 
 void pop(node **front,node **rear){
-    struct node *temp = *front;
+    struct node *temp = *front;//not declare double star temp
 
     if(*front==NULL){
         return;
