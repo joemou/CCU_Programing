@@ -28,6 +28,7 @@
     "clang.completion.enable": true,
     "files.associations": {
       "typeinfo": "c",
-      "stdlib.h": "c"
+      "stdlib.h": "c",
+      "iostream": "cpp"
     }
   }
