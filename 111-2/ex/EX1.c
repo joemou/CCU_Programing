@@ -9,6 +9,7 @@ int main(){
     char str3[STR_LEN];
     char str4[STR_LEN];
     int num,i,check,space;
+    int length1, length2;
 
     fgets (str1, 150, stdin);
     fgets (str2, 150, stdin);
@@ -18,10 +19,18 @@ int main(){
     while((scanf("%d",&num))!=EOF){
         switch(num){
             case 1:
-                strcpy(str3,str1);
-                strcpy(str4,str2);
-                printf ("Reverse A: %s\n", strrev(str3));
-                printf ("Reverse B: %s\n", strrev(str4));    
+                length1 = strlen(str1);
+                length2 = strlen(str2);
+                for (int i = length1-1; i >= 0;i--){
+                    str3[length1 - i-1] = str1[i];
+                }
+                for (int i = length2-1; i >= 0;i--){
+                    str4[length2 - i-1] = str2[i];
+                }
+                str3[length1] = '\0';
+                str4[length2] = '\0';
+                printf("Reverse A: %s\n", str3);
+                printf ("Reverse B: %s\n", str4);    
                 break;
             case 2:
                 printf ("The length of A: %d\n", strlen(str1));
