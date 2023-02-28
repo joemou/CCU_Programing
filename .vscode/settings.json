@@ -29,6 +29,8 @@
     "files.associations": {
       "typeinfo": "c",
       "stdlib.h": "c",
-      "iostream": "cpp"
+      "iostream": "cpp",
+      "algorithm": "c",
+      "string_view": "c"
     }
   }

@@ -16,10 +16,10 @@ int abc(int a,int count){
 
 int main(){
     int i, j,a,b;
-    int max = 0;
+
 
     while((scanf("%d %d", &i, &j))!=EOF){
-
+        int max = 0;
         a = i;
         b = j;
     

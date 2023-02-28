@@ -10,10 +10,10 @@ int main(){
     int position_x, position_y;
     char direction;
     int scent[x+1][y+1];
-    int check = 0;
+
 
     while((scanf("%d %d %c",& position_x, &position_y, &direction))!=EOF){
-
+        int check = 0;
         int lost = 0;
         char insert[101];
         scanf("%s", insert);
