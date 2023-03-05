@@ -1,22 +1,37 @@
 #include <stdio.h>
 
-int main(){
-    char s1[100], s2[100];
-    int a, b;
-    int digit1, digit2,min;
 
-    scanf("%s %s", s1, s2);
-    sscanf(s1, "%d", &a);
-    sscanf(s2, "%d", &b);
-    while(a!=0&&b!=0){
-        digit1 = a % 10;
-        digit2 = b % 10;
-        if(digit1>digit2){
-            min = digit2;
+
+int main(){
+    int a, b;
+    int ans,flag;
+
+    scanf("%d %d", &a, &b);
+
+    while(a!=0||b!=0){
+        ans = 0,flag=0;
+        while(a!=0||b!=0){
+            if((a%10+b%10)+flag>9){
+                flag = 1;
+                ans++;
+            }
+            else{
+                flag = 0;
+            }
+            a /= 10;
+            b /= 10;
+        }
+        if(ans==0){
+            printf("No carry operation.\n");
+        }
+        else if(ans==1){
+            printf("1 carry operation.\n");
         }
         else{
-            min = digit1;
+            printf("%d carry operations.\n",ans);
         }
-        for (int i = min)
+        scanf("%d %d", &a, &b);
+    
     }
+
 }
