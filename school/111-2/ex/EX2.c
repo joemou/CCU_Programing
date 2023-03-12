@@ -10,13 +10,12 @@
 #include <ctype.h>
 
 #define MAXLINE 4096
-#define TRASH
 
-
-#define FUNCTION_CALLED() printf("%s\n", __func__)
+#define FUNCTION_CALLED() printf("%s\n", __func__);
 #define CUBE(x) ((x) * (x) * (x))
 #define NOT_TRUE 0
-#define specialPrint printf("The total is:")
+#define specialPrint(n) printf(#n);
+#define strSandwich(strC, strA, strB) sprintf(strC, "%s%s%s", strA, strB, strA)
 
 
 
@@ -56,7 +55,7 @@ int main(){
                     inputPtr++;
                 }
             }
-            specialPrint(The total is:) //this equals to printf("The total is:")
+            specialPrint(The total is:);     //this equals to printf("The total is:")
             printf(" %d\n", CUBE(sum+2));    //cube means x^3
         }
         else{   //string situation
