@@ -12,8 +12,6 @@ int main(){
     if(str2[strlen(str2) - 1] == '\n')
         str2[strlen(str2) - 1] = '\0';
     
-    if(str1[strlen(str1) - 1] == '\n')
-    str1[strlen(str1) - 1] = '\0';
 
     len = strlen(str2);
     while(str1[i]!='\0'){
