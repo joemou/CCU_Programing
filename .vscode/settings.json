@@ -31,6 +31,8 @@
       "stdlib.h": "c",
       "iostream": "cpp",
       "algorithm": "c",
-      "string_view": "c"
+      "string_view": "c",
+      "line.h": "c",
+      "string.h": "c"
     }
   }
