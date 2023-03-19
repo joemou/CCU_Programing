@@ -10,6 +10,8 @@
 #include <ctype.h>
 
 #define MAXLINE 4096
+#define TRASH
+#undef TRASH
 
 #define FUNCTION_CALLED() printf("%s\n", __func__);
 #define CUBE(x) ((x) * (x) * (x))

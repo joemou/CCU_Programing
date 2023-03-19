@@ -2,6 +2,18 @@
 #include <ctype.h>
 #include <string.h>
 
+int HAND_MAKE_STRCMP(const char* str1, const char* str2) {
+    int i = 0;
+    while (str1[i] != '\0' && str2[i] != '\0') {
+        if (str1[i] != str2[i]) {
+            return str1[i] - str2[i];
+        }
+        i++;
+    }
+    return str1[i] - str2[i];
+}
+
+
 unsigned count(char *str,char *word){
     char *p;
  
@@ -21,7 +33,7 @@ unsigned count(char *str,char *word){
 
     
     for (int i = 0; i < k; i++)
-        if (strcmp(word , split[i])==0){
+        if (HAND_MAKE_STRCMP(word , split[i])==0){
             ans++;
         }
     return ans;
@@ -39,31 +51,5 @@ int main(){
     
     printf("%d", count(str1,str2));
 
-
-    /*
-    char str1[1000001],str2[100];
-    int i=0 ,k=0,ans=0,len;
-
-    fgets(str1, 1000001, stdin);
-    fgets(str2, 100, stdin);
-
-
-    len = strlen(str2);
-    while(str1[i]!='\0'){
-        
-        if(str1[i]==str2[k]){
-            if(k==len-2&&((isspace(str1[i+1])&&isspace(str1[i-len+1]))||(i-k==0)||(str1[i+1]=='\n'))){
-                k = 0;
-                ans++;
-            }
-            k++;
-        }
-        else{
-            k = 0;
-        }
-        i++;
-    }
-
-    
-    printf("%d\n", ans);*/
 }
+
