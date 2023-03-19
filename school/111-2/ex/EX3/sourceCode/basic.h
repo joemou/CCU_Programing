@@ -5,7 +5,9 @@
 #include <string.h>     // For string manipulation functions
 #include <ctype.h>
 
-int isAddOrMinus(char *op);
+#define ADD_OPERATOR "+"
+#define MINUS_OPERATOR "-"
+#define isAddOrMinus(oper) (strcmp((oper), ADD_OPERATOR) == 0 || strcmp((oper), MINUS_OPERATOR) == 0)
 
 #define MAXBUF 10000
 #define TRUE 1
