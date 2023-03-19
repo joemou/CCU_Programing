@@ -10,20 +10,25 @@
 #define isAddOrMinus(oper) (strcmp((oper), ADD_OPERATOR) == 0 || strcmp((oper), MINUS_OPERATOR) == 0)
 
 #define MAXBUF 10000
+
 #define TRUE 1
 #define FALSE 0
+
 #define SAME 0
 #define LOWER -1
 #define HIGHER 1
+
 #define Rev 2
 #define Nor 1
+
 #define TooMany 1
 #define TooLess -1
+#define Unknown 2
+#define Duplicate 3
+
 #define INFIX 1
 #define PREFIX 2
 #define POSTFIX 3
-#define Unknown 2
-#define Duplicate 3
 
 
 
