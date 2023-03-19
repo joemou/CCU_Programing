@@ -33,6 +33,7 @@
       "algorithm": "c",
       "string_view": "c",
       "line.h": "c",
-      "string.h": "c"
+      "string.h": "c",
+      "array": "c"
     }
   }
