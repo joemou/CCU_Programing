@@ -97,7 +97,7 @@ int main() {
                 printf("Enter a number of the criminal: ");
                 scanf("%d", &crim_num);
                 temp = head;//initialize
-                for (int i = 0; i < crim_num; i++) {
+                for (int i = 0; i < crim_num-1; i++) {
                     temp = temp->next;
                 }
                 printf("Name: %s\n====================\n",temp->criminal_name);
