@@ -79,7 +79,7 @@ int main() {
                 printf("Enter a number of the criminal: ");
                 scanf("%d", &crim_num);
                 temp = head;//initialize
-                for (int i = 0; i < crim_num - 1; i++) {
+                for (int i = 0; i < crim_num; i++) {
                     temp = temp->next;
                 }
                 printf("Enter crime: ");
@@ -112,3 +112,32 @@ int main() {
         printf("Enter a command: ");
     }
 }
+
+/*
+1
+NoodleEater
+1
+JHChen
+1
+Edwina
+2
+0
+Murder
+2000
+36
+2
+0
+Steal
+2005
+24
+2
+1
+sleeo
+2023
+1
+3
+0
+3
+1
+0
+*/
