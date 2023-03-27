@@ -5,10 +5,9 @@
 typedef struct course
 {
     char *subject;
-    struct course *prev;
-    struct course *next;
+    struct node *prev;
+    struct node *next;
 } course;
-
 
 course *getnode(char *str)
 {
@@ -19,31 +18,22 @@ course *getnode(char *str)
     return newnode;
 }
 
-
 course *create(int *num, int *next, int *prev, char *str[], course *head, int how_many)
 {
 
-    int at = 0;
+    int flag;
+
+    for (int i = 0; i < how_many; i++)
+    {
+        if (prev[i] == -1)
+        {
+            head = getnode(str[i]);
+            flag = i;
+        }
+    }
 
     while (how_many--)
     {
-        course *temp = head;
-        if (head == NULL)
-        {
-            head = getnode(str[at]);
-        }
-        else
-        {
-            for (int j = 0; j < how_many; j++)
-            {
-                if (num[at] == next[j])
-                {
-                    temp->next = getnode(str[j]);
-                }
-            }
-        }
-
-        at++;
     }
 }
 
