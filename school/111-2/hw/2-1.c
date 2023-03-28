@@ -5,8 +5,8 @@
 typedef struct course
 {
     char *subject;
-    struct node *prev;
-    struct node *next;
+    struct course *prev;
+    struct course *next;
 } course;
 
 course *getnode(char *str)
@@ -21,7 +21,7 @@ course *getnode(char *str)
 course *create(int *num, int *next, int *prev, char *str[], course *head, int how_many)
 {
 
-    int flag;
+    int flag = 0;
 
     for (int i = 0; i < how_many; i++)
     {
@@ -31,14 +31,30 @@ course *create(int *num, int *next, int *prev, char *str[], course *head, int ho
             flag = i;
         }
     }
+    course *temp = head;
+    course *temp2;
 
-    while (how_many--)
+    for (int i = 0; i < how_many; i++)
     {
+        for (int j = 0; j < how_many; j++)
+        {
+            if (next[flag] == num[j])
+            {
+                temp->next = getnode(str[j]);
+                temp2 = temp;
+                temp = temp->next;
+                temp->prev = temp2;
+                flag = j;
+                break;
+            }
+        }
     }
+    return head;
 }
 
 int main(int argc, char *argv[])
 {
+    printf("123\n");
     int num1[100], num2[100], num3[100];
     char *str[100];
     course *head = NULL;
@@ -53,5 +69,23 @@ int main(int argc, char *argv[])
     }
 
     head = create(num1, num2, num3, str, head, k);
+
+    course *temp = head;
+
+    char action;
+
+    printf("Current Course: %s", temp->subject);
+    while (scanf(" %c", &action) && action != 'q')
+    {
+        if (action == 'n')
+        {
+            temp = temp->next;
+        }
+        else if (action == 'p')
+        {
+            temp = temp->prev;
+        }
+        printf("Current Course: %s", temp->subject);
+    }
     return 0;
 }
