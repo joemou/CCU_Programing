@@ -34,59 +34,21 @@ course *create(int *num, int *next, int *prev, char *str[], course *head, int ho
         }
     }
     course *temp = head;
+    course *temp2;
 
     for (int i = 0; i < how_many; i++)
     {
-        int exist = 0;
-
         for (int j = 0; j < how_many; j++)
         {
-            course *temp3 = head;
-            course *temp4;
-
-            while (temp3->next != NULL)
-            { // create tail
-
-                temp3 = temp3->next;
-                if (temp->next == NULL)
-                {
-                    temp4 = temp3;
-                }
-            }
 
             if (next[flag] == num[j])
             {
-                while (temp3 != NULL)
-                {
-                    if (temp3->num == j)
-                    { // seeee whether head have the node
-                        exist = 1;
-                        break;
-                    }
-                    temp3 = temp3->next;
-                }
-                if (exist == 1)
-                {
-                    temp->next = temp3;
-                }
-                else if (exist == 0)
-                {
-                    temp->next = getnode(str[j], j); // scribe the have already created node
-                    temp = temp->next;
-                }
-            }
-
-            if (prev[flag] == num[j])
-            {
-                while (temp4 != NULL)
-                {
-                    if (temp4->num == j)
-                    { // seeee whether head have the node
-                        break;
-                    }
-                    temp4 = temp4->prev;
-                }
-                temp->prev = temp4;
+                temp->next = getnode(str[j], j);
+                temp2 = temp;
+                temp = temp->next;
+                temp->prev = temp2;
+                flag = j;
+                break;
             }
         }
     }
