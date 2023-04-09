@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
     char action;
 
     printf("Current Course: %s\n", temp->subject);
-    printf("[n] Next course. [p] Prior course [q] Quit:");
+    printf("[n] Next course. [p] Prior course [q] Quit: ");
     while (scanf(" %c", &action) && action != 'q')
     {
         if (action == 'n')
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
             }
         }
         printf("Current Course: %s\n", temp->subject);
-        printf("[n] Next course. [p] Prior course [q] Quit:");
+        printf("[n] Next course. [p] Prior course [q] Quit: ");
     }
     return 0;
 }

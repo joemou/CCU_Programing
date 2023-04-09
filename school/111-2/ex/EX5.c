@@ -55,7 +55,7 @@ signed main()
     printf("longest length: %d\n", longest_len);
     for (int i = 0; i < numStrings; i++) {
         char *current = *(str + i);
-        for (int j = 0; *(current + j) != '\n';j++){//printw without newline
+        for (int j = 0; *(current + j) != '\n'&&*(current + j) != '\0';j++){//printw without newline
             printf("%c", *(current+j));
         }
     }
