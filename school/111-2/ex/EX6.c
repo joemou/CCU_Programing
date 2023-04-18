@@ -63,11 +63,11 @@ void search(node **head, char *deduct[], int num)
 
         while (temp != NULL)
         {
-            if (strcmp(target, temp->fruit) == 0)
+            if (strcmp(target, temp->fruit) == 0) // find it
             {
-                count++;
+                count++; // count +++
                 node *next = temp->next;
-                delete (head, target);
+                delete (head, target); // delete the node
                 temp = next;
             }
             else
@@ -77,7 +77,7 @@ void search(node **head, char *deduct[], int num)
         }
 
         int i = 0;
-        while (i < num)
+        while (i < num) // find whether the target is in the decduct
         {
             if (strcmp(target, deduct[i]) == 0)
             {
