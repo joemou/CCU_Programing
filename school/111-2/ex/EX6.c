@@ -52,32 +52,27 @@ void delete(node **head, char name[])
 
 void search(node **head, char *deduct[], int num)
 {
-    node *current = *head;
-    while (current != NULL)
+    while (*head != NULL)
     {
         char target[1026];
-        strcpy(target, current->fruit);
+        strcpy(target, (*head)->fruit);
 
         int count = 0, deduct_count = 0;
-        node *temp = current;
 
+        node *temp = *head;
         while (temp != NULL)
         {
-            if (strcmp(target, temp->fruit) == 0) // find it
+
+            if (strcmp(target, temp->fruit) == 0)
             {
-                count++; // count +++
-                node *next = temp->next;
-                delete (head, target); // delete the node
-                temp = next;
+                count++;
+                delete (head, target);
             }
-            else
-            {
-                temp = temp->next;
-            }
+            temp = temp->next;
         }
 
         int i = 0;
-        while (i < num) // find whether the target is in the decduct
+        while (i < num)
         {
             if (strcmp(target, deduct[i]) == 0)
             {
@@ -86,8 +81,6 @@ void search(node **head, char *deduct[], int num)
             i++;
         }
         printf("%s: %d\n", target, count - deduct_count);
-        // Move to the next node
-        current = current->next;
     }
 }
 
