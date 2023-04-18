@@ -60,15 +60,17 @@ void search(node **head, char *deduct[], int num)
         int count = 0, deduct_count = 0;
 
         node *temp = *head;
+        node *next;
         while (temp != NULL)
         {
-
+            next = temp->next;
             if (strcmp(target, temp->fruit) == 0)
             {
                 count++;
+                next = temp->next;
                 delete (head, target);
             }
-            temp = temp->next;
+            temp = next;
         }
 
         int i = 0;
