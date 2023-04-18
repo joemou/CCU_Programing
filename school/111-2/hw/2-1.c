@@ -4,17 +4,15 @@
 
 typedef struct course
 {
-    int num;
     char *subject;
     struct course *prev;
     struct course *next;
 } course;
 
-course *getnode(char *str, int num)
+course *getnode(char *str)
 {
     course *newnode = (course *)malloc(sizeof(course));
     newnode->subject = strdup(str);
-    newnode->num = num;
     newnode->prev = NULL;
     newnode->next = NULL;
     return newnode;
@@ -24,69 +22,72 @@ course *create(int *num, int *next, int *prev, char *str[], course *head, int ho
 {
 
     int flag = 0;
+    int record[101];
+    int k = 0;
 
-    for (int i = 0; i < how_many; i++)
+    for (int i = 0; i < how_many; i++)//create head
     {
         if (prev[i] == -1)
         {
-            head = getnode(str[i], i);
+            head = getnode(str[i]);
+            record[k] = num[i];
             flag = i;
+            k++;
+            break;
         }
     }
+    
     course *temp = head;
+    course *temp2;
 
     for (int i = 0; i < how_many; i++)
     {
-        int exist = 0;
-
         for (int j = 0; j < how_many; j++)
         {
-            course *temp3 = head;
-            course *temp4;
-
-            while (temp3->next != NULL)
-            { // create tail
-
-                temp3 = temp3->next;
-                if (temp->next == NULL)
-                {
-                    temp4 = temp3;
-                }
-            }
-
-            if (next[flag] == num[j])
+            int exist = 0;
+            if (next[flag] == num[j])//if equal
             {
-                while (temp3 != NULL)
-                {
-                    if (temp3->num == j)
-                    { // seeee whether head have the node
+                int placen=0,placep=0;
+
+                for (int g=0 ; g < k;g++){
+                    
+                    if(record[g]==num[j]){//deal next.check whether it has already been created
                         exist = 1;
+                        placen = g;
                         break;
                     }
-                    temp3 = temp3->next;
                 }
-                if (exist == 1)
-                {
-                    temp->next = temp3;
-                }
-                else if (exist == 0)
-                {
-                    temp->next = getnode(str[j], j); // scribe the have already created node
-                    temp = temp->next;
-                }
-            }
+                
+                
+                if(exist==0){//if has not been created
+                    temp2 = head;// initialize for prev
+                    record[k] = next[flag];//record in has been created
+                    k++;
 
-            if (prev[flag] == num[j])
-            {
-                while (temp4 != NULL)
-                {
-                    if (temp4->num == j)
-                    { // seeee whether head have the node
-                        break;
+                    temp->next = getnode(str[j]);
+                    flag = j;//move flag
+                    temp = temp->next;//move temp
+                    
+                    for (int g = 0 ; g < k;g++){
+                        if(record[g]==prev[flag]){//deal prev.find prev place
+                            placep = g;
+                            break;
+                        }
                     }
-                    temp4 = temp4->prev;
+                    while(placep--){//traversal prev
+                        temp2 = temp2->next;
+                    }
+                    temp->prev = temp2;
+
                 }
-                temp->prev = temp4;
+                else if(exist==1){//has been created,find it and no prev to determine
+                    temp2 = head;//initialize
+                    while(placen--){
+                        temp2 = temp2->next;
+                    }   
+                    temp->next = temp2;
+                    break;
+                }
             }
         }
     }
@@ -122,6 +123,7 @@ int main(int argc, char *argv[])
     char action;
 
     printf("Current Course: %s\n", temp->subject);
+    printf("[n] Next course. [p] Prior course [q] Quit: ");
     while (scanf(" %c", &action) && action != 'q')
     {
         if (action == 'n')
@@ -147,6 +149,7 @@ int main(int argc, char *argv[])
             }
         }
         printf("Current Course: %s\n", temp->subject);
+        printf("[n] Next course. [p] Prior course [q] Quit: ");
     }
     return 0;
 }
