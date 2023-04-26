@@ -25,7 +25,7 @@ course *create(int *num, int *next, int *prev, char *str[], course *head, int ho
     int record[101];
     int k = 0;
 
-    for (int i = 0; i < how_many; i++)//create head
+    for (int i = 0; i < how_many; i++) // create head
     {
         if (prev[i] == -1)
         {
@@ -36,7 +36,7 @@ course *create(int *num, int *next, int *prev, char *str[], course *head, int ho
             break;
         }
     }
-    
+
     course *temp = head;
     course *temp2;
 
@@ -45,46 +45,52 @@ course *create(int *num, int *next, int *prev, char *str[], course *head, int ho
         for (int j = 0; j < how_many; j++)
         {
             int exist = 0;
-            if (next[flag] == num[j])//if equal
+            if (next[flag] == num[j]) // if equal
             {
-                int placen=0,placep=0;
+                int placen = 0, placep = 0;
 
-                for (int g=0 ; g < k;g++){
-                    
-                    if(record[g]==num[j]){//deal next.check whether it has already been created
+                for (int g = 0; g < k; g++)
+                {
+
+                    if (record[g] == num[j])
+                    { // deal next.check whether it has already been created
                         exist = 1;
                         placen = g;
                         break;
                     }
                 }
-                
-                
-                if(exist==0){//if has not been created
-                    temp2 = head;// initialize for prev
-                    record[k] = next[flag];//record in has been created
+
+                if (exist == 0)
+                {                           // if has not been created
+                    temp2 = head;           // initialize for prev
+                    record[k] = next[flag]; // record in has been created
                     k++;
 
                     temp->next = getnode(str[j]);
-                    flag = j;//move flag
-                    temp = temp->next;//move temp
-                    
-                    for (int g = 0 ; g < k;g++){
-                        if(record[g]==prev[flag]){//deal prev.find prev place
+                    flag = j;          // move flag
+                    temp = temp->next; // move temp
+
+                    for (int g = 0; g < k; g++)
+                    {
+                        if (record[g] == prev[flag])
+                        { // deal prev.find prev place
                             placep = g;
                             break;
                         }
                     }
-                    while(placep--){//traversal prev
+                    while (placep--)
+                    { // traversal prev
                         temp2 = temp2->next;
                     }
                     temp->prev = temp2;
-
                 }
-                else if(exist==1){//has been created,find it and no prev to determine
-                    temp2 = head;//initialize
-                    while(placen--){
+                else if (exist == 1)
+                {                 // has been created,find it and no prev to determine
+                    temp2 = head; // initialize
+                    while (placen--)
+                    {
                         temp2 = temp2->next;
-                    }   
+                    }
                     temp->next = temp2;
                     break;
                 }

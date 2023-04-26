@@ -4,7 +4,7 @@
 
 typedef struct node
 {
-    char fruit[1026];
+    char fruit[20000];
     struct node *next;
 
 } node; // define node
@@ -54,7 +54,7 @@ void search(node **head, char *deduct[], int num)
 {
     while (*head != NULL)
     {
-        char target[1026];
+        char target[20000];
         strcpy(target, (*head)->fruit);
 
         int count = 0, deduct_count = 0;
@@ -89,16 +89,16 @@ void search(node **head, char *deduct[], int num)
 int main()
 {
     node *head = NULL;
-    char name[1026];
-    char *deduct[1026];
+    char name[20000];
+    char *deduct[20000];
     int num = 0;
 
-    for (int i = 0; i < 1026; i++)
+    for (int i = 0; i < 20000; i++)
     {
-        deduct[i] = (char *)malloc(1026 * sizeof(char));
+        deduct[i] = (char *)malloc(20000 * sizeof(char));
     }
 
-    while (fgets(name, 1026, stdin) != NULL)
+    while (fgets(name, 20000, stdin) != NULL)
     {
         name[strlen(name) - 1] = '\0';
         if (name[0] == '-')
