@@ -100,7 +100,7 @@ int main(){
     scanf("%d", &time);
     node *head = NULL;
 
-    char name[21];
+    char name[25];
 
     while(time--){
         scanf(" %s %d", name, &score);
