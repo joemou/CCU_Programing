@@ -97,12 +97,15 @@ void print(node **head){
 }
 int main(){
     int time,score;
+
+    printf("Number of records you want to key in:");
     scanf("%d", &time);
     node *head = NULL;
 
     char name[25];
 
     while(time--){
+        printf("Enter name & score:");
         scanf(" %s %d", name, &score);
         create(&head, name, score);
     }
