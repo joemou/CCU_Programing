@@ -199,7 +199,7 @@ int main() {
 
   printPreOrder(root);
 
-  root = deleteNode(root, 3);
+  root = deleteNode(root, 1);
 
   printf("\nAfter deletion: ");
   printPreOrder(root);
