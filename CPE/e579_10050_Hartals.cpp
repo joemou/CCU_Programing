@@ -31,14 +31,15 @@ int main(){
             }
         }
 
-        for (int g = 1; (6*g < d) && (7*g < d);g++){
-            day[6*g] = 0;
-            day[7*g] = 0;
+        for (int g = 0; (6+7*g <= d) && (7+7*g <= d);g++){
+            day[6+7*g] = 0;
+            day[7+7*g] = 0;
         }
 
         int sum = 0;
 
-        for (int i=1 ; i < d;i++){
+        for (int i=1 ; i < d+1;i++){
+            
             if(day[i]==1){
                 sum += 1;
             }
