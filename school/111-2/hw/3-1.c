@@ -1,120 +1,96 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define MAX_WORD_LEN 20
 #define MAX_LINE_LEN 60
 
-struct word_node {
-    char word[MAX_WORD_LEN + 1];
-    struct word_node *next;
-};
+typedef struct node {
+  char *word;
+  struct node *next;
+} Node;
 
-struct word_node *line_start = NULL;
-struct word_node *line_end = NULL;
+Node *head = NULL;
 int line_len = 0;
 int num_words = 0;
 
 void clear_line(void)
 {
-    struct word_node *current = line_start;
-    while (current != NULL) {
-        struct word_node *temp = current;
-        current = current->next;
-        free(temp);
-    }
-    line_start = NULL;
-    line_end = NULL;
-    line_len = 0;
-    num_words = 0;
+  Node *current = head;
+  while (current != NULL) {
+    Node *temp = current;
+    current = current->next;
+    free(temp->word);
+    free(temp);
+  }
+  head = NULL;
+  line_len = 0;
+  num_words = 0;
 }
 
 void add_word(const char *word)
 {
-    if (num_words > 0) {
-        line_end->next = (struct word_node*) malloc(sizeof(struct word_node));
-        line_end = line_end->next;
-        line_end->next = NULL;
-        strcpy(line_end->word, " ");
-        line_len++;
-    }
-
-    struct word_node *new_node = (struct word_node*) malloc(sizeof(struct word_node));
-    new_node->next = NULL;
+  Node *new_node = malloc(sizeof(Node));
+  if(strlen(word) + 1<=21){
+    new_node->word = malloc(strlen(word) + 1);
     strcpy(new_node->word, word);
-    if (line_start == NULL) {
-        line_start = new_node;
-        line_end = new_node;
-    } else {
-        line_end->next = new_node;
-        line_end = new_node;
+  }
+  else{
+    new_node->word = malloc(strlen(word) + 2);
+    strncpy(new_node->word, word,20);
+    new_node->word[20] = '*';
+    new_node->word[21] = '\0';
+  }
+  new_node->next = NULL;
+
+  if (head == NULL) {
+    head = new_node;
+  } else {
+    Node *current = head;
+    while (current->next != NULL) {
+      current = current->next;
     }
-    line_len += strlen(word);
-    num_words++;
+    current->next = new_node;
+  }
+
+  if (num_words > 0) {
+    line_len++;
+  }
+  line_len += strlen(new_node->word);
+  num_words++;
 }
 
 int space_remaining(void)
 {
-    return MAX_LINE_LEN - line_len;
+  return MAX_LINE_LEN - line_len;
 }
 
 void write_line(void)
 {
-    int extra_spaces, spaces_to_insert, i, j;
-    struct word_node *current = line_start;
+  int extra_spaces, spaces_to_insert, j;
 
-    extra_spaces = MAX_LINE_LEN - line_len;
-    while (current != NULL) {
-        printf("%s", current->word);
-        if (current->next != NULL) {
-            spaces_to_insert = extra_spaces / (num_words - 1);
-            for (j = 1; j <= spaces_to_insert + 1; j++)
-                putchar(' ');
-            extra_spaces -= spaces_to_insert;
-            num_words--;
-        }
-        current = current->next;
+  extra_spaces = MAX_LINE_LEN - line_len;
+  if (num_words == 1) {
+    printf("%s\n", head->word);
+    return;
+  }
+  for (Node *current = head; current != NULL; current = current->next) {
+    printf("%s", current->word);
+    if (current->next != NULL) {
+      spaces_to_insert = extra_spaces / (num_words - 1);
+      for (j = 1; j <= spaces_to_insert + 1; j++)
+        putchar(' ');
+      extra_spaces -= spaces_to_insert;
+      num_words--;
     }
-    putchar('\n');
+  }
+  putchar('\n');
 }
 
 void flush_line(void)
 {
-    struct word_node *current = line_start;
-    while (current != NULL) {
-        printf("%s", current->word);
-        current = current->next;
-    }
-    putchar('\n');
-}
-int main(void)
-{
-  char word[MAX_WORD_LEN+2];  // Maximum word length + newline + null terminator
-  int word_len;
-
-  clear_line();
-
-  while (scanf("%s", word) != EOF) {
-    word_len = strlen(word);
-    if (word_len > MAX_WORD_LEN) {
-      fprintf(stderr, "Word too long\n");
-      exit(EXIT_FAILURE);
-    }
-    if (space_remaining() < word_len) {
-      add_word("\n");
-      write_line();
-      clear_line();
-    }
-    add_word(word);
+  for (Node *current = head; current != NULL; current = current->next) {
+    printf("%s ", current->word);
   }
-
-  write_line();
-  return 0;
+  putchar('\n');
 }
-
-
-
-
-
-
-
