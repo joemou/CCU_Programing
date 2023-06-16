@@ -1,5 +1,27 @@
+# Ignore macOS system files
+.DS_Store
 
+# Ignore Windows system files
+Thumbs.db
 
-*.exe
+# Ignore macOS folder metadata
+.AppleDouble/
+.LSOverride
 
-tempCodeRunnerFile.c
+# Ignore Windows folder configuration files
+Desktop.ini
+$RECYCLE.BIN/
+
+# Ignore Mac file-specific attributes
+._*
+
+# Ignore Windows file-specific attributes
+ehthumbs.db
+
+# Ignore common development environment files
+.vscode/
+.idea/
+
+# Ignore project-specific files or directories
+/my-project-specific-file.txt
+/my-project-specific-directory/
