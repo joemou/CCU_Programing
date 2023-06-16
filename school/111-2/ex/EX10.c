@@ -1,32 +1,32 @@
 #include <stdio.h>
+#include <math.h>
 
-unsigned int getRangeBits(unsigned int A, int i, int j) {
-    unsigned int mask = ((1 << (j - i + 1)) - 1) << i;
-    unsigned int rangeBits = (A & mask) >> i;
-    return rangeBits;
+unsigned int getRangeBits(unsigned int A, int i, int j){
+    return A & 255;
 }
 
-unsigned int concatenate(unsigned int A, int i, int j, unsigned int B, int x, int y) {
-    unsigned int rangeA = ((A >> i) & ((1 << (j - i + 1)) - 1));
-    unsigned int rangeB = ((B >> x) & ((1 << (y - x + 1)) - 1));
-    unsigned int concatenated = (rangeA << (y - x + 1)) | rangeB;
-    return concatenated;
-}   
+unsigned int concatenate(unsigned int A, int i, int j, unsigned int B, int x, int y){
+    unsigned int temp = B & 255;
+    
+    A = A >> 8;
+    A = A << 8;
+    
 
-int main() {
-    int times;
-    unsigned int num, c, v = 520;
+    return A | temp;
+}
 
-    scanf("%d", &times);
 
-    while (times > 0) {
-        scanf("%u", &num);
-        c = num ^ 3610409;
-        c = c ^ getRangeBits(c, 1, 8);
-        v = concatenate(v, 9, 32, c, 1, 8);
-        times--;
-        printf("%d ", v);
+int main(){
 
+    unsigned int V = 520;
+    unsigned int n,C,M,U;
+    scanf("%d", &n);
+    for(int i = 0; i < n; i++){
+        scanf("%d", &M);
+        U = V^3610409;
+        C = M^getRangeBits(U, 1, 8);
+        V = concatenate(V, 9, 32, C, 1, 8);
+        printf("%d ", C);
     }
 
     return 0;
