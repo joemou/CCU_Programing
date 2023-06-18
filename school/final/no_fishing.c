@@ -1,52 +1,60 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
-#define MAX_MESSAGES 1000
+#define MAX_MESSAGES 100
 #define MAX_NAME_LENGTH 20
-#define MAX_MESSAGE_LENGTH 4096
-#define MAX_BANNED_LENGTH 129
-#define MAX_WARNINGS 3
+#define MAX_MESSAGE_LENGTH 100
 
 typedef struct {
     char name[MAX_NAME_LENGTH];
     char message[MAX_MESSAGE_LENGTH];
-} Message;
+    int warnings;
+} ChatMessage;
 
 int main() {
     int n;
-    char banned_word[MAX_BANNED_LENGTH];
-    scanf("%d %s", &n, banned_word);
-    
-    int warning_count[MAX_MESSAGES] = {0};
-    int ban_count = 0;
-    Message messages[MAX_MESSAGES];
-    
+    char bannedWord[MAX_MESSAGE_LENGTH];
+    ChatMessage messages[MAX_MESSAGES];
+
+    scanf("%d %s", &n, bannedWord);
+    getchar(); // Consume the newline character after reading bannedWord
+
     for (int i = 0; i < n; i++) {
-        scanf("%s: %[^\n]", messages[i].name, messages[i].message);
-        
-        // Check if the name has already received three warnings
-        if (warning_count[i] >= MAX_WARNINGS) {
-            printf("%s is banned.\n", messages[i].name);
-            continue;
+        char line[MAX_NAME_LENGTH + MAX_MESSAGE_LENGTH + 3];
+        fgets(line, sizeof(line), stdin);
+        line[strcspn(line, "\n")] = '\0'; // Remove the trailing newline character
+
+        char *name = strtok(line, ":");
+        char *message = strtok(NULL, "\0");
+        if (name && message) {
+            strcpy(messages[i].name, name);
+            strcpy(messages[i].message, message);
+            messages[i].warnings = 0;
+        } else {
+            printf("Invalid input format for message %d\n", i + 1);
+            return 1;
         }
-        
+    }
+
+    for (int i = 0; i < n; i++) {
         // Check if the banned word is present in the message
-        if (strstr(messages[i].message, banned_word) != NULL) {
-            // Add a warning to the name
-            warning_count[i]++;
-            
-            // Check if the name has reached three warnings
-            if (warning_count[i] >= MAX_WARNINGS) {
+        int flag = 0;
+        if (messages[i].warnings != -1 && strstr(messages[i].message, bannedWord) != NULL) {
+            messages[i].warnings++;
+            flag = 1;
+            if (messages[i].warnings >= 3) {
+                messages[i].warnings = -1;
                 printf("%s is banned.\n", messages[i].name);
-                ban_count++;
-                continue;
+                flag = 1;
+                continue;  // Skip printing the message
             }
         }
-        
-        // Print the line if no filtering is required
-        printf("%s: %s\n", messages[i].name, messages[i].message);
+        if (flag!=0||messages[i].warnings != -1) {
+            printf("%s: %s\n", "", messages[i].message);
+        }
     }
-    
+
     return 0;
 }
+
+
