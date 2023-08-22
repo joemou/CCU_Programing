@@ -36,6 +36,7 @@
       "string.h": "c",
       "array": "c",
       "e569_00245_Uncompress.C": "cpp",
-      "string": "c"
+      "string": "c",
+      "map": "c"
     }
   }
