@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+<<<<<<< Updated upstream
 #define MAX_MESSAGES 5000
 #define MAX_NAME_LENGTH 5000
 #define MAX_MESSAGE_LENGTH 5000
@@ -42,12 +43,43 @@ void changeValue(MapNode** map, const char* key, int newValue) {
         if (strcmp(map[i]->key, key) == 0) {
             map[i]->value = newValue;
             return;
+=======
+#define MAX_MESSAGES 1000
+#define MAX_NAME_LENGTH 20
+#define MAX_MESSAGE_LENGTH 4095
+#define MAX_BANNED_LENGTH 128
+
+void filter_messages(int n, char banned_word[], char messages[][MAX_MESSAGE_LENGTH]) {
+    int warnings[MAX_MESSAGES] = {0};
+    int banned[MAX_MESSAGES] = {0};
+
+    for (int i = 0; i < n; i++) {
+        char name[MAX_NAME_LENGTH];
+        sscanf(messages[i], "%[^:]:", name);
+        char* message = strchr(messages[i], ':') + 2;
+
+        if (strstr(message, banned_word) != NULL) {
+            warnings[i]++;
+        }
+
+        if (warnings[i] >= 3) {
+            banned[i] = 1;
+        }
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (banned[i] == 1) {
+            printf("%s is banned.\n", strtok(messages[i], ":"));
+        } else {
+            printf("%s\n", messages[i]);
+>>>>>>> Stashed changes
         }
     }
 }
 
 int main() {
     int n;
+<<<<<<< Updated upstream
     char bannedWord[MAX_MESSAGE_LENGTH];
     ChatMessage messages[MAX_MESSAGES];
 
@@ -102,10 +134,27 @@ int main() {
     }
 
 
+=======
+    char banned_word[MAX_BANNED_LENGTH];
+    char messages[MAX_MESSAGES][MAX_MESSAGE_LENGTH];
+
+    scanf("%d %s", &n, banned_word);
+    getchar(); // Consume newline character
+
+    for (int i = 0; i < n; i++) {
+        fgets(messages[i], sizeof(messages[i]), stdin);
+        messages[i][strlen(messages[i]) - 1] = '\0'; // Remove newline character
+    }
+
+    filter_messages(n, banned_word, messages);
+>>>>>>> Stashed changes
 
     return 0;
 }
 
+<<<<<<< Updated upstream
 
 
 
+=======
+>>>>>>> Stashed changes
