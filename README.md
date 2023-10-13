@@ -1,2 +1,2 @@
 # PRATICE file
-just for pratice
+for ccu programing class
